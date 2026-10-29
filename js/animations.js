@@ -54,12 +54,13 @@ export function playAccessSequence({timing, onUpdate, onComplete}) {
 }
 
 /** Low-frame-rate decorative code rain. No network, libraries, or tracking. */
-export function startCodeRain(canvas) {
+export function startCodeRain(canvas, {background = '#020805', colors = ['#247b39', '#68d96e'], symbols} = {}) {
     const context = canvas.getContext("2d");
     if (!context) return () => {
     };
     const glyphs = "01アイウエカキサシスセソタチツテナニヌネノ<>/{}";
     const fontSize = 13;
+    const alphabet = symbols || glyphs;
     let columns = [];
     let width = 0;
     let height = 0;
@@ -76,18 +77,20 @@ export function startCodeRain(canvas) {
         context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
         context.font = `${fontSize}px monospace`;
         columns = Array.from({length: Math.ceil(width / 21)}, () => Math.random() * -80);
-        context.fillStyle = "#020805";
+        context.fillStyle = background;
         context.fillRect(0, 0, width, height);
     }
 
     function draw(now) {
         if (stopped) return;
         if (!document.hidden && now - lastDraw > 80) {
-            context.fillStyle = "rgba(2, 8, 5, 0.10)";
+            context.globalAlpha = .12;
+            context.fillStyle = background;
             context.fillRect(0, 0, width, height);
+            context.globalAlpha = 1;
             columns.forEach((position, index) => {
-                context.fillStyle = index % 7 === 0 ? "#68d96e" : "#247b39";
-                context.fillText(glyphs[Math.floor(Math.random() * glyphs.length)], index * 21, position * fontSize);
+                context.fillStyle = index % 7 === 0 ? colors[1] : colors[0];
+                context.fillText(alphabet[Math.floor(Math.random() * alphabet.length)], index * 21, position * fontSize);
                 columns[index] += .55;
                 if (position * fontSize > height && Math.random() > .975) columns[index] = Math.random() * -25;
             });

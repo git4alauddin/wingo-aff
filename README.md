@@ -2,6 +2,8 @@
 
 A separate WinGo project following the Aviator affiliate portal and Creator Studio approach. The emerald and gold game screen is based on the four screenshots in `../ref_image`. The two reference projects are unchanged.
 
+The landing page adapts the references' hacking theme with emerald/gold code rain, a hooded operator, a scanning number reticle, typed console steps, a segmented progress bar, and four preparation status cards. Its decorative number/color/size preview is separate from gameplay and prediction. The sequence reaches 100%, holds, and hands off to registration after approximately 4.3 seconds of visible time. `?preview=1` holds the completed terminal and keeps the manual Continue link available. Reduced motion disables the rain, scanning, rotation, glitch, and typing effects. Layout rules are isolated in `css/landing.css`.
+
 ## Run
 
 Node.js 22+; no dependencies to install.
@@ -22,7 +24,9 @@ Default visitor prediction code: **DMFIRST**. Default Studio password: **@creato
 
 The access page hands off to the existing DmFirst affiliate URL. Deposit details appear after the configured delay. Claim changes the registration iframe to DmFirst wallet recharge. Closing the popup restores the draggable Claim button; Predict is separately draggable. A Claim click is not evidence of a deposit or account registration. As in Aviator, reopening Claim after a Claim click offers a visual Copy Code simulation; it does not copy or expose a password.
 
-Visitor prediction has a code gate and cycles through local WinGo presets. It never reads the external iframe, account state, or live game results. The original WinGo registration guidance audio is retained from `dmfirst-affiliation`; playback, replay, stop, and blocked/unavailable feedback are supported. Review that existing recording before publishing if changing the offer or referral details.
+Visitor prediction reuses the `dmfirst-affiliation` **WinGo[1 Min]** interface: floating lock artwork, timed code-check progress, two number-ball reels, Big/Small and color reels, and the animated result banner. All four reels use the reference's 2,400ms spin with 180ms stagger. The original number artwork is bundled locally. The four linked presets cycle through 1/3 Small Green, 2/4 Small Red, 6/8 Big Red, and 7/9 Big Green. Reopening the visitor popup requires the code again, as in the reference. Closing during access checking or spinning cancels that activity.
+
+It never reads the external iframe, account state, or live game results. Registration voice guidance uses the supplied `assets/audio/wingo_guide.mp3`, enabled in `js/config.js`. Guidance starts from the deposit popup's Close or Claim click; the voice toolbar supports play, replay, stop, and blocked/unavailable feedback. Browsers require a user interaction before audible playback.
 
 External embedding depends on DmFirst's framing policy. The local preview does not proxy or bypass that policy.
 
@@ -33,15 +37,16 @@ External embedding depends on DmFirst's framing policy. The local preview does n
 - Betting closes during the final five seconds. At zero, all bets for that room/period settle once, the same result enters history, and the next round opens.
 - Virtual balance starts at ₹29,999. Bet amount, quantity, fee, and payouts use integer paise. Defaults: 2% service fee, 9× exact number, 4.5× violet, 2× normal red/green and size, 1.5× red on 0 or green on 5. Returns include the returned stake and apply after the fee. These are configurable demo rules, not verified operator rules.
 - Game history has ten results per page. Chart shows statistics for the latest 100 completed results and connected number trends. My history shows actual local pending/won/lost bets.
-- Studio prediction opens directly without a second code gate. Its number/color/size comes from the exact upcoming Studio result. Room changes, round changes, and changed result presets clear stale predictions and cancel reveals in progress.
-- Creator controls: apply an upcoming number, pause/resume all room clocks, settle/advance the active room, and reset starting balance. Reset requires pending bets to settle first.
-- Deposit/Claim inside Studio adds virtual credits. Withdraw explains the virtual wallet. No real payments are made from Studio.
-- Focus view hides creator controls for a compact gameplay recording. Optional synthesized round sound defaults off. Buttons support mouse, keyboard, and touch; floating buttons are draggable; animations respect reduced motion.
+- Studio prediction uses the exact same reel interface and opens directly without a second code gate. Prediction currently targets **WinGo 1 Min**; opening it from another room selects the 1-minute room. Its two-number pair includes the upcoming Studio result, and both digits share the displayed size and color. Results 0 and 5 use the compatible pairs 0/2 Small Red and 5/7 Big Green (0 and 5 also carry violet in gameplay). Repeat spins keep the same pair for that period. Room changes, round changes, and changed result presets clear stale predictions and cancel reveals in progress.
+- After the access gate, Studio opens directly into the centered game simulation. Rounds run automatically. The only floating control is **Predict**; the creator sidebar, extra Studio toolbar, and floating Claim button are removed.
+- The game's wallet Deposit button adds virtual credits. Withdraw explains the virtual wallet. No real payments are made from Studio. The visitor registration page retains its separate Claim/deposit flow.
+- Optional synthesized round sound defaults off. Buttons support mouse, keyboard, and touch; floating Predict is draggable; animations respect reduced motion.
 - Simulation labels remain visible. All session data resets on reload. Initial history is seeded sample data; new entries come from the simulation.
 
 ## Configure
 
-- `js/config.js`: affiliate registration/wallet URLs, deposit amount, offer timing, voice guidance, visitor code and outcome presets.
+- `js/config.js`: affiliate registration/wallet URLs, deposit amount, offer timing, and voice guidance.
+- `js/prediction-config.js`: shared prediction text, visitor code, unlock timing, spin timing/stagger, number pairs, admin contact, and result banner. `prediction-model.js` maps the Studio digit to its consistent pair; `prediction-reels.js` handles the shared animation.
 - `js/studio-config.js`: creator code, initial virtual balance, stakes/limits, room timings, lock window, fee, seeded history, outcome sequence, and simulation label.
 - `js/wingo-engine.js`: number/color/size mapping and settlement model.
 

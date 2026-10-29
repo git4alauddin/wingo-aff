@@ -7,17 +7,12 @@ export const config = Object.freeze({
   minimumDeposit: 1000,
   depositCurrency: 'INR',
   popupDelayMs: 1000,
-  sequence: { fillMs: 1800, holdMs: 300, unlockMs: 0 },
-  guidance: { enabled: true, src: './assets/audio/registration-guide.mp3' },
+  sequence: { fillMs: 3600, holdMs: 450, unlockMs: 250 },
+  guidance: { enabled: true, src: './assets/audio/wingo_guide.mp3' },
   copyCodeDemo: {
     heading: 'Already deposited?', caption: 'Visual demo', buttonText: 'Copy Code',
     loadingText: 'Copying…', completeText: 'Complete',
   },
 });
 
-// These codes are browser-side UI gates, not secure authentication.
-export const predictionConfig = Object.freeze({
-  enabled: true, accessCode: 'DMFIRST', revealDurationMs: 1000,
-  outcomes: [7, 2, 0, 5, 9, 4, 1, 8, 3, 6],
-  adminContact: '@mr_kalam0',
-});
+export { predictionConfig } from './prediction-config.js';

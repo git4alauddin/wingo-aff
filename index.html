@@ -1,7 +1,98 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#001c17"><title>DM FIRST × WinGo</title><link rel="icon" href="assets/images/favicon.svg"><link rel="stylesheet" href="css/base.css"><link rel="stylesheet" href="css/portal.css"><script type="module" src="js/landing.js"></script></head>
-<body class="landing-page"><header class="portal-header"><a class="brand" href="?preview=1"><img src="assets/images/brand.svg" alt="DmFirst"><span class="brand-tag">WIN GO</span></a><a class="studio-link" href="creator-studio.html">Creator Studio <span>↗</span></a></header>
-<main class="landing"><div class="eyebrow"><span class="live-dot"></span> DM FIRST · WIN GO ACCESS</div><h1>One number.<br><span>Every possibility.</span></h1><p class="landing-subtitle">Number. Color. Big or Small.<br>Your WinGo experience, with DmFirst.</p>
-<section class="access-card" aria-label="Preparing registration"><div class="landing-balls" aria-hidden="true"><span class="ball ball-red"><b>2</b></span><span class="ball ball-green ball-large"><b>7</b></span><span class="ball ball-green ball-dual"><b>5</b></span></div><div class="access-heading"><span data-progress-label>Preparing access</span><strong><span data-progress-value>0</span>%</strong></div><div class="access-track" role="progressbar" aria-label="Preparing registration" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span></span></div><div class="access-foot"><span>DM FIRST PARTNER PORTAL</span><span data-access-status>PREPARING</span></div></section>
-<p class="landing-status" role="status" data-redirect-status>Getting your registration link ready…</p><a class="primary" href="registration.html">Continue to DmFirst <span>↗</span></a><p class="preview-notice" id="preview-notice" hidden>Preview mode · Automatic navigation paused</p></main>
-<footer class="portal-footer"><span>DM FIRST × WIN GO</span><span>18+ · Play responsibly</span></footer></body></html>
+<html lang="en" data-stage="locked">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#031711">
+  <meta name="description" content="WinGo with DmFirst. Preparing your game interface and affiliate registration access.">
+  <title>DM FIRST × WinGo — Access Terminal</title>
+  <link rel="icon" href="assets/images/favicon.svg">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/landing.css">
+  <link rel="preload" as="image" href="assets/images/hooded-figure.svg">
+  <script type="module" src="js/landing.js"></script>
+</head>
+<body class="terminal-page">
+  <canvas id="code-rain" class="code-rain" aria-hidden="true"></canvas>
+  <div class="terminal-atmosphere" aria-hidden="true"><div class="world-grid"></div><div class="screen-lines"></div><div class="edge-code edge-code-left">DMF.INIT<br>01011001<br>WG.01.MIN<br>00011010<br>VIEW.LOAD<br>11001001<br>COLOR.MAP<br>01001110</div><div class="edge-code edge-code-right">ACCESS.03<br>10110010<br>DMF.ROUTE<br>00110101<br>WIN_GO.UI<br>10011010<br>VIEW.INIT<br>01101001</div></div>
+  <main class="access-portal" aria-labelledby="portal-title">
+    <div class="terminal-corners" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+    <header class="terminal-header">
+      <a class="terminal-brand" href="./?preview=1" aria-label="DmFirst WinGo access preview"><img src="assets/images/brand.svg" alt="DmFirst" width="154" height="36"><span>WIN GO <b>//</b> ACCESS TERMINAL</span></a>
+      <a class="studio-entry" href="creator-studio.html" data-creator-link>Creator Studio <span aria-hidden="true">↗</span></a>
+    </header>
+
+    <div class="terminal-layout">
+      <section class="game-intro" aria-labelledby="portal-title">
+        <p class="terminal-eyebrow"><i></i> DM FIRST PARTNER INTERFACE <span>03 / WIN GO</span></p>
+        <h1 id="portal-title" class="game-title" data-text="WIN GO">WIN <span>GO</span><b aria-hidden="true">_</b></h1>
+        <div class="title-meta"><span>NUMBER</span><i>/</i><span>COLOR</span><i>/</i><span>BIG + SMALL</span></div>
+        <p class="intro-copy">Your next move starts here.<br><span>Initializing the WinGo experience.</span></p>
+
+        <div class="number-scene" aria-hidden="true">
+          <div class="scene-grid"></div><div class="scene-sweep"></div>
+          <img class="terminal-operator" src="assets/images/hooded-figure.svg" alt="" width="560" height="430">
+          <div class="scene-label"><span><i></i> NUMBER INTERFACE</span><span>01 MIN</span></div>
+          <div class="scene-data scene-data-left"><span>RANGE <b>0—9</b></span><span>COLORS <b>03</b></span><span>SIZE <b>02</b></span></div>
+          <div class="number-reticle">
+            <svg class="reticle-svg" viewBox="0 0 300 300" fill="none">
+              <defs><linearGradient id="orbitGradient"><stop stop-color="#20c88e"/><stop offset="1" stop-color="#ebcb7c"/></linearGradient></defs>
+              <circle class="reticle-boundary" cx="150" cy="150" r="143"/>
+              <g class="reticle-outer"><circle cx="150" cy="150" r="130"/><path d="M150 20a130 130 0 0 1 124 91M150 280A130 130 0 0 1 26 189"/><rect x="146" y="16" width="8" height="8"/><rect x="146" y="276" width="8" height="8"/></g>
+              <circle class="reticle-ticks" cx="150" cy="150" r="117"/>
+              <g class="reticle-inner"><circle cx="150" cy="150" r="103"/><path d="M52 180a103 103 0 0 1 96-133M248 120a103 103 0 0 1-96 133"/></g>
+              <circle class="reticle-progress" cx="150" cy="150" r="143" pathLength="100"/>
+              <path class="reticle-cross" d="M150 0v12m0 276v12M0 150h12m276 0h12"/>
+            </svg>
+            <div class="hero-ball" data-hero-ball><span class="ball ball-green ball-large"><b data-scene-digit>7</b></span></div>
+            <span class="number-coordinate coordinate-top">WG / <b data-number-code>007</b></span><span class="number-coordinate coordinate-bottom" data-scene-phase>LOADING VISUALS</span>
+          </div>
+          <div class="scene-data scene-data-right"><span>MODULE <b>WIN GO</b></span><span>PARTNER <b>DM FIRST</b></span><span data-diagnostic>0x0000</span></div>
+          <div class="scene-results"><span>INTERFACE PREVIEW</span><div><b data-sample-number>07</b><span data-sample-color>GREEN</span><span data-sample-size>BIG</span></div></div>
+          <span class="scene-corner corner-a"></span><span class="scene-corner corner-b"></span>
+        </div>
+        <div class="route-strip"><span>DMF://WIN_GO</span><i aria-hidden="true"></i><span>REGISTRATION ACCESS <b>↗</b></span></div>
+      </section>
+
+      <aside class="access-terminal" aria-label="Preparing registration access">
+        <div class="terminal-bar"><span class="terminal-dots" aria-hidden="true"><i></i><i></i><i></i></span><span>WIN_GO.ACCESS</span><span>V.03</span></div>
+        <div class="terminal-content">
+          <p class="console-eyebrow">// SESSION INITIALIZATION</p>
+          <h2><span data-terminal-title>Preparing access</span><b class="terminal-cursor" aria-hidden="true">_</b></h2>
+          <p class="referral-state"><i></i> DM FIRST REFERRAL ATTACHED</p>
+          <section class="progress-section" aria-labelledby="progress-label">
+            <div class="progress-heading"><h3 id="progress-label" data-progress-label>PREPARING YOUR INTERFACE</h3><strong><span data-progress-value>0</span><small>%</small></strong></div>
+            <div class="access-track" role="progressbar" aria-labelledby="progress-label" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span class="progress-fill"><i></i></span><div class="progress-segments" aria-hidden="true"></div></div>
+            <p class="progress-footnote" data-redirect-status>Registration opens automatically when ready.</p>
+          </section>
+          <div class="connection-strip"><div><span>DESTINATION</span><strong>DMFIRST / REGISTER</strong></div><div><span>STATUS</span><strong data-access-status>PREPARING</strong></div></div>
+          <section class="system-console" aria-labelledby="console-title">
+            <div class="console-heading"><h3 id="console-title">SYSTEM CONSOLE</h3><span data-console-state>INITIALIZING</span></div>
+            <ol class="console-lines">
+              <li data-console-step><span>01</span><code data-line="Initialize WinGo interface">Initialize WinGo interface</code><b aria-hidden="true">✓</b></li>
+              <li data-console-step><span>02</span><code data-line="Load number and color visuals">Load number and color visuals</code><b aria-hidden="true">✓</b></li>
+              <li data-console-step><span>03</span><code data-line="Attach DM FIRST referral">Attach DM FIRST referral</code><b aria-hidden="true">✓</b></li>
+              <li data-console-step><span>04</span><code data-line="Prepare registration route">Prepare registration route</code><b aria-hidden="true">✓</b></li>
+              <li data-console-step><span>05</span><code data-line="Complete interface checks">Complete interface checks</code><b aria-hidden="true">✓</b></li>
+              <li data-console-step><span>06</span><code data-line="Access ready. Opening portal.">Access ready. Opening portal.</code><b aria-hidden="true">✓</b></li>
+            </ol>
+          </section>
+          <div class="terminal-readout"><div><span>LOCAL TIME</span><time data-clock>00:00:00</time></div><span class="signal-meter" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><span data-module-status>STANDBY</span></div>
+        </div>
+      </aside>
+    </div>
+
+    <section class="status-grid" aria-label="Portal preparation status">
+      <div class="status-tile" data-status-tile><span class="status-icon" aria-hidden="true">⌗</span><div><h2>GAME INTERFACE</h2><p data-tile-label>LOADING</p></div><span class="tile-index" aria-hidden="true">01</span></div>
+      <div class="status-tile" data-status-tile><span class="status-icon" aria-hidden="true">⌘</span><div><h2>YOUR REFERRAL</h2><p data-tile-label>STANDBY</p></div><span class="tile-index" aria-hidden="true">02</span></div>
+      <div class="status-tile" data-status-tile><span class="status-icon" aria-hidden="true">↗</span><div><h2>DESTINATION ROUTE</h2><p data-tile-label>STANDBY</p></div><span class="tile-index" aria-hidden="true">03</span></div>
+      <div class="status-tile" data-status-tile><span class="status-icon" aria-hidden="true">⊞</span><div><h2>PORTAL ACCESS</h2><p data-tile-label>LOCKED</p></div><span class="tile-index" aria-hidden="true">04</span></div>
+    </section>
+
+    <div class="terminal-handoff"><p class="preview-notice" id="preview-notice" hidden>PREVIEW MODE <span>·</span> Automatic navigation paused</p><a class="continue-link" href="registration.html" data-wrapper-link>Continue to DmFirst <span>↗</span></a></div>
+    <footer class="terminal-footer"><p>© <span data-year>2026</span> <strong>DM FIRST</strong> <span>×</span> WIN GO</p><p>Affiliate registration <span>·</span> 18+ · Play responsibly.</p><span class="footer-id" aria-hidden="true">DMF.WG // 003</span></footer>
+    <noscript><p class="no-script">JavaScript is required for the animated transition. <a href="registration.html">Continue to registration ↗</a></p></noscript>
+    <p class="sr-only" role="status" id="sequence-announcement">Preparing your DmFirst registration referral.</p>
+  </main>
+</body>
+</html>
