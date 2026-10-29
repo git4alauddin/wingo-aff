@@ -1,0 +1,24 @@
+.game-shell { overflow:clip; }
+.game-header { position:sticky; top:0; z-index:12; margin:0 -10px; padding:0 10px; background:#052d25; }
+.my-history-tools { display:flex; justify-content:flex-end; padding:12px 12px 4px; }
+.my-history-tools button { display:flex; align-items:center; gap:5px; border:1px solid #c2a34e; border-radius:12px; padding:6px 9px; background:transparent; color:#dfc570; font-size:12px; }
+.my-history-tools button[aria-pressed="true"] { background:#c2a34e22; }
+.my-history-tools button>span { width:16px; height:16px; display:grid; place-items:center; border:1px solid #c2a34e; border-radius:50%; font-size:17px; line-height:1; }
+.my-history-row { display:block; padding:9px 11px; border:0; }
+.my-history-row summary { display:grid; grid-template-columns:44px minmax(0,1fr) 83px; align-items:center; gap:10px; list-style:none; cursor:pointer; min-height:50px; }
+.my-history-row summary::-webkit-details-marker { display:none; }
+.my-history-row summary:focus-visible { outline:2px solid var(--gold); outline-offset:3px; border-radius:4px; }
+.bet-badge { width:44px; height:44px; display:grid; place-items:center; border-radius:12px; background:#15b76c; color:white; font-size:25px; font-weight:500; }
+.bet-badge.red { background:#fc5b63; }.bet-badge.violet { background:#b967ee; }.bet-badge.small { background:#6ea6f0; font-size:12px; }.bet-badge.big { background:#ffad58; font-size:15px; }.bet-badge.dual { background:linear-gradient(135deg,#f45b68,#bc64ed); }.bet-badge.green.dual { background:linear-gradient(135deg,#2ab578,#bc64ed); }
+.bet-meta { display:block; min-width:0; }
+.my-history-row .bet-meta strong { display:block; font-size:12px; font-weight:400; white-space:nowrap; color:#edcd76; }
+.bet-meta i { font-size:9px; font-style:normal; color:#7b986e; margin-left:4px; display:inline-block; }
+.my-history-row[open] .bet-meta i { transform:rotate(180deg); }
+.bet-meta time { display:block; color:#8eada2; font-size:11px; margin-top:6px; white-space:nowrap; }
+.my-history-row .bet-outcome { display:flex; flex-direction:column; gap:6px; align-items:stretch; font-size:12px; }
+.bet-outcome>span { display:block; text-align:center; padding:4px; border:1px solid currentColor; border-radius:5px; font-size:11px; line-height:1; }
+.my-history-row .bet-outcome strong { font-size:12px; font-weight:400; white-space:nowrap; color:inherit; text-align:right; }
+.bet-outcome.won { color:#35bd82; }.bet-outcome.lost { color:#ff5a65; }.bet-outcome.pending { color:#d4be70; }
+.history-detail-content { display:grid; grid-template-columns:1fr auto; gap:9px; margin:12px 0 4px; padding:13px 12px; border:1px solid #1e5541; border-radius:7px; background:#03281e; font-size:11px; }
+.history-detail-content>span { color:#97b7a7; }.my-history-row .history-detail-content strong { color:#d0e0d4; font-size:11px; text-align:right; font-weight:400; }
+@media(max-width:390px) { .game-header { margin-inline:-8px; padding-inline:8px; }.my-history-row { padding:8px 10px; }.my-history-row summary { gap:8px; grid-template-columns:41px minmax(0,1fr) 76px; }.bet-badge { width:41px; height:44px; }.my-history-row .bet-meta strong { font-size:10px; }.bet-meta time { font-size:9px; }.my-history-row .bet-outcome strong { font-size:10px; } }

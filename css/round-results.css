@@ -1,0 +1,50 @@
+/* Live UI recreation of the supplied win/loss receipt references. */
+.result-dialog {
+  --card-top:#ff984f; --card-bottom:#fa404a; --medal-light:#fff3ae; --medal-main:#ffd344; --medal-dark:#eda238;
+  --ribbon-light:#ffd277; --ribbon-main:#f79032; --ribbon-dark:#d8622b; --wing-light:#fff5dd; --wing-dark:#ffba80;
+  --receipt-top:#ffd1b8; --receipt-ink:#fb6267; --receipt-muted:#9cacac; --slot:#e97038; --slot-border:#ffbc7a;
+  width:min(350px,calc(100% - 28px)); max-height:calc(100svh - 24px); padding:102px 20px 48px; margin:auto;
+  border:0; border-radius:0; background:transparent; color:white; box-shadow:none; overflow:auto; scrollbar-width:none;
+  text-align:center; font-family:Arial,Helvetica,sans-serif;
+}
+.result-dialog::-webkit-scrollbar { display:none; }
+.result-dialog::backdrop { background:#00130bc7; backdrop-filter:blur(1px); }
+.result-dialog[data-outcome="lost"] {
+  --card-top:#dceaff; --card-bottom:#9bb6d5; --medal-light:#f4fbff; --medal-main:#c1d9ef; --medal-dark:#7e9dc6;
+  --ribbon-light:#deedff; --ribbon-main:#a9c6e6; --ribbon-dark:#6d94bb; --wing-light:#f2faff; --wing-dark:#a2bedc;
+  --receipt-top:#d4e5fa; --receipt-ink:#98aaad; --receipt-muted:#9aa9b2; --slot:#86a8ce; --slot-border:#cde3fa;
+}
+.result-dialog[open] { animation:result-arrive .4s cubic-bezier(.2,.8,.2,1) both; }
+.result-card { position:relative; padding:26px 17px 25px; border-radius:30px; background:linear-gradient(130deg,var(--card-top),var(--card-bottom)); box-shadow:0 12px 30px #0003,inset 0 2px #ffffff38; }
+.result-trophy { position:absolute; z-index:1; width:calc(100% + 34px); height:166px; top:-118px; left:-17px; overflow:visible; filter:drop-shadow(0 5px 3px #0002); pointer-events:none; }
+.result-card h2 { position:relative; z-index:2; font-size:21px; font-weight:750; margin:0 0 43px; line-height:1.2; color:white; }
+.result-dialog[data-outcome="lost"] .result-card h2 { color:#7b9bb8; }
+.lottery-result { display:flex; justify-content:center; align-items:center; gap:5px; font-size:11px; margin-bottom:23px; min-height:25px; }
+.lottery-result>span { white-space:nowrap; }
+.result-dialog #resultChips { display:flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:3px; }
+.lottery-tag { padding:5px 6px; border-radius:4px; color:white; font-size:12px; line-height:1; font-weight:600; }
+.lottery-tag.red { background:#ff5865; }.lottery-tag.green,.lottery-tag.big { background:#3caf80; }.lottery-tag.violet,.lottery-tag.small { background:#a36bef; }
+.lottery-tag.number { padding-inline:2px; font-size:19px; background:transparent; }.lottery-tag.number.dual { background:linear-gradient(90deg,#f65269 0 50%,#a661f5 50%); color:transparent; background-clip:text; }
+.lottery-tag.number.green { color:#3caf80; }.lottery-tag.number.red { color:#f65269; }.lottery-tag.number.dual { color:transparent; }
+.result-dialog[data-outcome="lost"] .lottery-result { color:#7697b5; }
+.result-receipt { position:relative; margin:0 -2px 22px; padding-top:9px; }
+.receipt-slot { position:absolute; left:-1px; right:-1px; top:-5px; height:27px; border:6px solid var(--slot-border); border-radius:25px; background:var(--slot); box-shadow:inset 0 3px 5px #0002,0 2px 3px #0001; }
+.receipt-paper { position:relative; min-height:104px; padding:13px 14px 12px; background:linear-gradient(var(--receipt-top),#fff8f5 65%,#fff); clip-path:polygon(7% 0,93% 0,93% 20%,96% 70%,100% 100%,68% 98%,50% 100%,30% 98%,0 100%,4% 70%,7% 20%); filter:drop-shadow(0 8px 2px #0003); color:var(--receipt-muted); }
+.receipt-paper>span,.receipt-paper>strong,.receipt-paper>small { display:block; }
+.receipt-paper #resultBonusLabel { color:var(--receipt-ink); font-size:13px; font-weight:700; line-height:1.2; }
+.receipt-paper #resultAmount { color:var(--receipt-ink); font-size:23px; margin:5px 0 3px; font-weight:750; line-height:1; }
+.receipt-paper #resultLoss { color:var(--receipt-ink); font-size:29px; line-height:1.2; margin:3px 0 12px; }
+.receipt-paper #resultRoom,.receipt-paper #resultPeriod { font-size:11px; line-height:1.25; font-weight:400; }
+.result-dialog[data-outcome="lost"] .receipt-paper { background:linear-gradient(var(--receipt-top),#edf6ff 70%,#e9f2ff); }
+.result-return { margin:0 0 13px; font-size:9px; color:#fffbeecc; line-height:1.4; }
+.result-dialog[data-outcome="lost"] .result-return { color:#6b8eac; }
+.result-auto { display:flex; align-items:center; gap:7px; text-align:left; font-size:11px; font-weight:600; cursor:pointer; user-select:none; }
+.result-auto input { appearance:none; flex:0 0 22px; width:22px; height:22px; min-width:22px; padding:0; margin:0; border:1px solid #fffe; border-radius:50%; background:transparent; display:grid; place-items:center; cursor:pointer; }
+.result-auto input:checked::before { content:''; width:10px; height:6px; border:solid white; border-width:0 0 1.5px 1.5px; transform:translateY(-1px) rotate(-45deg); }
+.result-auto input:focus-visible { outline:2px solid white; outline-offset:3px; }
+.result-close { position:absolute; bottom:-45px; left:calc(50% - 16px); display:grid; place-items:center; width:32px; height:32px; padding:0; border:2px solid #e6f5f5; border-radius:50%; background:#002d2255; color:#edfafa; }
+.result-close svg { width:21px; height:21px; fill:none; stroke:currentColor; stroke-width:1.6; }
+.result-close:hover { background:#124f42; }
+@keyframes result-arrive { from { opacity:0; transform:translateY(18px) scale(.95); } to { opacity:1; transform:translateY(0) scale(1); } }
+@media(max-width:390px) { .result-dialog { padding-inline:15px; width:min(320px,calc(100% - 20px)); }.result-card { padding-inline:13px; }.result-card h2 { font-size:20px; }.lottery-result { gap:4px; font-size:10px; }.lottery-tag { font-size:11px; padding:4px; }.lottery-tag.number { font-size:17px; }.result-trophy { width:calc(100% + 24px); left:-12px; }.receipt-paper #resultAmount { font-size:22px; } }
+@media(prefers-reduced-motion:reduce) { .result-dialog[open] { animation:none; } }

@@ -2,6 +2,8 @@ import { studioConfig } from './studio-config.js';
 import { WinGoEngine, statistics } from './wingo-engine.js';
 import { mountPrediction } from './prediction.js';
 import { mountDraggableWidget } from './draggable-widget.js';
+import { mountRoundResults } from './round-results.js';
+import { mountBetHistory } from './bet-history.js';
 import { ball, dots, money, numberText, roomLabel, bindDialog, toast } from './ui.js';
 
 const $ = selector => document.querySelector(selector);
@@ -27,7 +29,9 @@ function startStudio() {
   let multiplier = 1, selection, betPeriod, tab = 'history', page = 0;
   let renderedPeriod, renderedNumber, renderedSecond, historyVersion, frame, previousTime = performance.now();
   let sound = false, audioContext;
-  const dialogs = $$('.dialog'); dialogs.forEach(bindDialog);
+  $$('.dialog:not(#resultDialog)').forEach(bindDialog);
+  const roundResults = mountRoundResults($('#resultDialog'), studioConfig.resultPopup);
+  const personalHistory = mountBetHistory($('#myHistory'));
   $('#simulationRibbon').textContent = studioConfig.disclaimer;
   $('#feeNote').textContent = `${studioConfig.serviceFee * 100}% service fee. Returns are calculated on the stake after this fee.`;
   $('#rulesFee').textContent = `This Studio applies a ${studioConfig.serviceFee * 100}% service fee to each stake. Multipliers include the returned stake and apply after the fee. Losing bets return zero.`;
@@ -41,7 +45,7 @@ function startStudio() {
   });
   const draggable = mountDraggableWidget($('#predictLauncher'));
 
-  function open(dialog) { if (!dialog.open) dialog.showModal(); }
+  function open(dialog) { if (!dialog.open && !document.querySelector('dialog[open]')) dialog.showModal(); }
   ['#howTo', '#support', '#announcementDetail'].forEach(selector => $(selector).addEventListener('click', () => open($('#rulesDialog'))));
   $('#deposit').addEventListener('click', () => open($('#creditsDialog')));
   $('#withdraw').addEventListener('click', () => toast('Studio uses virtual credits. Withdrawals are unavailable in the simulation.'));
@@ -102,6 +106,7 @@ function startStudio() {
   $('#randomBet').addEventListener('click', () => beginBet({ type: 'number', value: Math.floor(Math.random() * 10) }));
   function beginBet(nextSelection) {
     advanceClock(); render();
+    if (document.querySelector('dialog[open]')) return;
     const state = engine.snapshot();
     if (state.locked) return toast('This round is locked. Wait for the next period.');
     selection = nextSelection; betPeriod = state.period;
@@ -169,7 +174,7 @@ function startStudio() {
     }
     if (tab === 'my') {
       const bets = engine.bets.filter(bet => bet.room === state.seconds).slice(page * 10, page * 10 + 10);
-      $('#myHistory').innerHTML = bets.length ? bets.map(bet => `<div class="my-history-row"><div><strong>${bet.selection.type === 'number' ? 'Number ' : ''}${bet.selection.value}</strong><small>${bet.period}<br>Stake ${money(bet.amount)}${bet.status !== 'pending' ? ` · Result ${bet.result}` : ''}</small></div><div class="bet-outcome ${bet.status}"><strong>${bet.status === 'won' ? '+' + money(bet.payout) : bet.status === 'lost' ? '−' + money(bet.amount) : 'Pending'}</strong><small>${bet.status === 'won' ? 'Return incl. stake' : bet.status === 'lost' ? 'Lost' : 'Awaiting result'}</small></div></div>`).join('') : '<div class="empty-state"><div class="empty-scroll" aria-hidden="true"><span>≋</span></div><p>No data</p><small class="muted">Your virtual bets will appear here.</small></div>';
+      personalHistory.render(bets);
     }
     $('#pageLabel').textContent = `${page + 1}/${pageCount()}`;
     $('#previousPage').disabled = page === 0; $('#nextPage').disabled = page >= pageCount() - 1;
@@ -191,18 +196,11 @@ function startStudio() {
     if (!completed.length) return;
     const result = completed.find(row => row.room === engine.activeRoom);
     renderWallet();
+    completed.forEach(row => roundResults.enqueue(row, engine.bets));
     if (!result) return;
     chime();
     const bets = engine.bets.filter(bet => bet.period === result.period && bet.room === result.room);
-    if (bets.length && !document.querySelector('dialog[open]')) {
-      $('#resultPeriod').textContent = result.period;
-      $('#resultBall').innerHTML = ball(result.number, 'ball-large');
-      $('#resultChips').innerHTML = `<span class="chip ${result.size.toLowerCase()}">${result.size}</span>${result.colors.map(color => `<span class="chip ${color.toLowerCase()}">${color}</span>`).join('')}`;
-      const returned = bets.reduce((sum, bet) => sum + bet.payout, 0), staked = bets.reduce((sum, bet) => sum + bet.amount, 0);
-      $('#resultTitle').textContent = returned ? 'A winning round.' : 'Round complete.';
-      $('#resultReturn').textContent = `${money(returned)} returned from ${money(staked)} staked.`;
-      open($('#resultDialog'));
-    } else toast(`Result ${result.number} · ${result.size} · ${result.colors.join(' + ')}`);
+    if (!bets.length) toast(`Result ${result.number} · ${result.size} · ${result.colors.join(' + ')}`);
   }
   function advanceClock() {
     const now = performance.now();
@@ -217,6 +215,6 @@ function startStudio() {
   render(true); frame = requestAnimationFrame(animate);
   window.addEventListener('resize', drawChart);
   document.addEventListener('visibilitychange', () => { if (!document.hidden) { advanceClock(); render(true); } });
-  window.addEventListener('pagehide', () => { cancelAnimationFrame(frame); prediction.destroy(); draggable.destroy(); audioContext?.close(); }, { once: true });
+  window.addEventListener('pagehide', () => { cancelAnimationFrame(frame); prediction.destroy(); draggable.destroy(); roundResults.destroy(); personalHistory.destroy(); audioContext?.close(); }, { once: true });
 }
 window.addEventListener('pageshow', event => { if (event.persisted) location.reload(); });

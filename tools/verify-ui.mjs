@@ -55,7 +55,7 @@ try {
   const center = selector => evaluate(`(() => {const rect=document.querySelector(${JSON.stringify(selector)}).getBoundingClientRect();return {x:rect.left+rect.width/2,y:rect.top+rect.height/2};})()`);
   const touch = (type, point) => send('Input.dispatchTouchEvent', {type,touchPoints:type==='touchEnd'?[]:[{...point,radiusX:2,radiusY:2,force:1,id:1}]});
   const screenshot = async (name, fullPage = false) => {
-    await delay(name.includes('prediction') && !name.includes('spinning') ? 750 : 100);
+    await delay(/prediction|result-win|result-loss/.test(name) && !name.includes('spinning') ? 750 : 100);
     const clip = fullPage ? await evaluate('({x:0,y:0,width:innerWidth,height:document.documentElement.scrollHeight,scale:1})') : undefined;
     const result = await send('Page.captureScreenshot', { format: 'png', captureBeyondViewport: fullPage, ...(clip ? {clip} : {}) });
     fs.mkdirSync(path.join(root, 'preview'), { recursive: true });
@@ -116,13 +116,29 @@ try {
   await click('[data-dismiss-deposit]');
   await click('#predictLauncher');
   await screenshot('prediction-access-desktop');
+  const accessTheme = (card, input, button) => evaluate(`[
+    [${JSON.stringify(card)},['width','paddingTop','paddingLeft','backgroundImage','borderColor','borderRadius','boxShadow','fontFamily','color']],
+    [${JSON.stringify(input)},['height','padding','backgroundColor','borderColor','borderRadius','fontFamily','fontSize','letterSpacing']],
+    [${JSON.stringify(button)},['height','padding','backgroundImage','borderColor','borderRadius','fontFamily','fontSize','fontWeight']]
+  ].map(([selector,properties])=>{const style=getComputedStyle(document.querySelector(selector));return properties.map(property=>style[property])})`);
+  const visitorGateTheme = await accessTheme('#predictionDialog', '#predictCode', '#predictUnlock');
+  assert.equal(await evaluate("document.querySelector('#predictionDialog').classList.contains('gate-card')"), true);
+  for (const width of [393, 320]) {
+    await send('Emulation.setDeviceMetricsOverride', {width,height:900,deviceScaleFactor:1,mobile:true});
+    await screenshot(`prediction-access-mobile-${width}`);
+    assert.equal(await evaluate('document.documentElement.scrollWidth<=innerWidth'), true, `${width}px access card overflow`);
+    assert.equal(await evaluate("document.querySelector('#predictCode').getBoundingClientRect().width <= document.querySelector('#predictionDialog').clientWidth"), true);
+  }
+  await send('Emulation.setDeviceMetricsOverride', {width:1440,height:1050,deviceScaleFactor:1,mobile:false});
   await fill('#predictCode', 'wrong');
   await evaluate("document.querySelector('#predictCodeForm').requestSubmit()");
   assert.equal(await evaluate("document.querySelector('#predictionDialog').dataset.accessState"), 'opening');
   await waitFor("!document.querySelector('#predictCodeError').hidden");
   assert.equal(await evaluate("document.querySelector('#predictionDialog').dataset.accessState"), 'failed');
+  await screenshot('prediction-access-error');
   await fill('#predictCode', 'DMFIRST'); await evaluate("document.querySelector('#predictCodeForm').requestSubmit()");
   await waitFor("!document.querySelector('#predictPreview').hidden");
+  assert.equal(await evaluate("document.querySelector('#predictionDialog').classList.contains('gate-card')"), false, 'Access-card theme is scoped to the code gate');
   await click('#predictRun');
   assert.equal(await evaluate("document.querySelector('#predictResult').getAttribute('aria-busy')"), 'true');
   assert.equal(await evaluate("document.querySelectorAll('[data-reel-track]').length"), 4);
@@ -138,6 +154,8 @@ try {
   const visitorStyle = await predictionStyle();
   assert.deepEqual(await evaluate("new Promise((resolve,reject)=>{const image=new Image();image.onload=()=>resolve([image.naturalWidth,image.naturalHeight]);image.onerror=reject;image.src='/assets/images/prediction-reference.png'})"), [1080,816]);
   await open('/creator-studio.html', "!!document.querySelector('#studioGateForm')");
+  await screenshot('studio-access-desktop');
+  assert.deepEqual(await accessTheme('#studioGate .gate-card', '#studioPassword', '#studioGateForm .primary'), visitorGateTheme, 'Visitor access and Studio password cards share the same theme');
   await fill('#studioPassword', 'bad'); await evaluate("document.querySelector('#studioGateForm').requestSubmit()");
   assert.equal(await evaluate("document.querySelector('#studioGateError').hidden"), false);
   await fill('#studioPassword', '@creator'); await evaluate("document.querySelector('#studioGateForm').requestSubmit()");
@@ -156,11 +174,24 @@ try {
   await click('[data-selection="number:7"]'); await evaluate("document.querySelector('#betForm').requestSubmit()");
   assert.equal(await evaluate("document.querySelector('#wallet').textContent"), '₹29,989.00');
   await advance(60000); await waitFor("document.querySelector('#resultDialog').open");
+  assert.equal(await evaluate("document.querySelector('#resultDialog').dataset.outcome"), 'won');
+  assert.equal(await evaluate("document.querySelector('#resultAmount').textContent"), '₹88.20');
+  assert.equal(await evaluate("document.querySelector('#resultAutoClose').checked"), true);
+  await click('#resultAutoClose');
+  await screenshot('result-win-desktop');
   assert.equal(await evaluate("document.querySelector('#wallet').textContent"), '₹30,077.20');
   assert.equal(await evaluate("document.querySelector('#historyRows tr td:nth-child(2)').textContent"), '7');
   assertMatches(firstPrediction, await settledResult());
   await click('#resultDialog [data-close]'); await click('#tabMy');
   assert.equal(await evaluate("!!document.querySelector('.bet-outcome.won')"), true);
+  assert.equal(await evaluate("!!document.querySelector('.bet-meta time[datetime]') && !!document.querySelector('.bet-badge')"), true);
+  await click('[data-history-detail]');
+  assert.equal(await evaluate("document.querySelector('.my-history-row').open"), true);
+  await click('[data-history-detail]');
+  await evaluate("document.querySelector('#myPanel').scrollIntoView({block:'start'})");
+  await screenshot('my-history-desktop');
+  // Place a losing bet in the next 1-minute period to exercise the blue receipt.
+  await click('[data-selection="number:9"]'); await evaluate("document.querySelector('#betForm').requestSubmit()");
   await click('#tabChart'); assert.equal(await evaluate("document.querySelectorAll('.chart-row').length"), 10);
   await waitFor("!!document.querySelector('.chart-lines')"); await screenshot('chart-desktop');
   await click('#tabHistory'); const oldPeriod = await evaluate("document.querySelector('#historyRows tr td').textContent");
@@ -179,12 +210,37 @@ try {
   const secondPrediction = await revealedPrediction();
   await click('#predictionDialog [data-close]');
   await advance(30000); assertMatches(secondPrediction, await settledResult());
+  await waitFor("document.querySelector('#resultDialog').open");
+  assert.equal(await evaluate("document.querySelector('#resultDialog').dataset.outcome"), 'lost');
+  assert.equal(await evaluate("document.querySelector('#resultLoss').hidden"), false);
+  assert.equal(await evaluate("document.querySelector('#resultAmount').hidden"), true);
+  for (const width of [393,320]) {
+    await send('Emulation.setDeviceMetricsOverride',{width,height:900,deviceScaleFactor:1,mobile:true});
+    await screenshot(`result-loss-mobile-${width}`);
+    assert.equal(await evaluate('document.documentElement.scrollWidth<=innerWidth'),true);
+  }
+  await send('Emulation.setDeviceMetricsOverride',{width:1440,height:1050,deviceScaleFactor:1,mobile:false});
+  await click('#resultAutoClose');
+  await waitFor("!document.querySelector('#resultDialog').open");
+  assert.equal(await evaluate("document.querySelector('#wallet').textContent"), '₹30,067.20');
+  await click('[data-selection="size:Small"]'); await evaluate("document.querySelector('#betForm').requestSubmit()");
   await click('#predictLauncher'); assert.equal(await evaluate("document.querySelector('#predictResult').dataset.numbers"), undefined);
   await click('#predictRun'); await waitFor("document.querySelector('#predictResult').dataset.numbers==='0,2'");
   assert.equal(await evaluate("document.querySelector('#predictResult').dataset.color"), 'Red');
   const dualPrediction = await revealedPrediction();
-  await click('#predictionDialog [data-close]');
   await advance(60000); assertMatches(dualPrediction, await settledResult());
+  assert.equal(await evaluate("document.querySelector('#resultDialog').open"), false, 'A receipt waits for the open prediction dialog');
+  await click('#predictionDialog [data-close]');
+  await waitFor("document.querySelector('#resultDialog').open");
+  assert.equal(await evaluate("document.querySelector('#resultDialog').dataset.payout"), '1960');
+  assert.equal(await evaluate("document.querySelector('#resultChips').textContent"), 'RedViolet0Small');
+  await click('#resultAutoClose');
+  await send('Emulation.setDeviceMetricsOverride',{width:393,height:900,deviceScaleFactor:1,mobile:true});
+  await screenshot('result-win-mobile-393');
+  await send('Emulation.setDeviceMetricsOverride',{width:320,height:900,deviceScaleFactor:1,mobile:true});
+  await screenshot('result-win-mobile-320');
+  await click('#resultDialog [data-close]');
+  await send('Emulation.setDeviceMetricsOverride',{width:1440,height:1050,deviceScaleFactor:1,mobile:false});
   await click('#predictLauncher'); await click('#predictRun'); await advance(60000);
   await delay(3100);
   assert.equal(await evaluate("document.querySelector('#predictResult').dataset.numbers"), undefined, 'A round change cancels an in-progress reveal');
@@ -206,7 +262,12 @@ try {
     await click('#predictionDialog [data-close]');
     await click('#tabChart'); await evaluate("document.querySelector('#chartPanel').scrollIntoView({block:'start'})");
     await screenshot(`chart-mobile-${width}`);
+    assert.equal(await evaluate("Math.abs(document.querySelector('.game-header').getBoundingClientRect().top)<2"), true, 'The DmFirst game header stays visible while scrolling');
     assert.equal(await evaluate('document.documentElement.scrollWidth<=innerWidth'), true, `${width}px chart overflow`);
+    await click('#tabMy'); await evaluate("document.querySelector('#myPanel').scrollIntoView({block:'start'})");
+    assert.equal(await evaluate("document.querySelectorAll('.bet-outcome.won').length"),2);
+    assert.equal(await evaluate("document.querySelectorAll('.bet-outcome.lost').length"),1);
+    await screenshot(`my-history-mobile-${width}`);
     await click('#tabHistory');
   }
   await evaluate('scrollTo(0,0)');
@@ -221,7 +282,7 @@ try {
   assert.equal(await evaluate("document.querySelector('#predictAccess').hidden"), true);
   await click('#predictionDialog [data-close]');
   await click('#deposit'); await click('#addCredits');
-  assert.equal(await evaluate("document.querySelector('#wallet').textContent"), '₹31,077.20');
+  assert.equal(await evaluate("document.querySelector('#wallet').textContent"), '₹31,076.80');
   await open('/registration.html', "!!document.querySelector('#predictLauncher')");
   await waitFor("document.querySelector('#deposit-dialog').open"); await screenshot('deposit-mobile');
   await click('[data-dismiss-deposit]'); await click('#predictLauncher');

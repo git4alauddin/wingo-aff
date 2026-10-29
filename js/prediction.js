@@ -53,6 +53,7 @@ export function mountPrediction({ launcher, snapshot, creator = false, beforePre
   }
   function showReady() {
     phase = 'ready';
+    dialog.classList.remove('gate-card');
     dialog.dataset.accessState = 'ready';
     dialog.setAttribute('aria-labelledby', 'predictionTitle');
     dialog.setAttribute('aria-describedby', 'prediction-preview-note');
@@ -63,6 +64,7 @@ export function mountPrediction({ launcher, snapshot, creator = false, beforePre
   function resetGate() {
     cancelUnlock(); runId++;
     unlocked = creator;
+    dialog.classList.toggle('gate-card', !creator);
     reels.reset();
     $('#predictCode').value = '';
     $('#predictCode').setAttribute('aria-invalid', 'false');
@@ -85,6 +87,7 @@ export function mountPrediction({ launcher, snapshot, creator = false, beforePre
   function open() {
     if (destroyed || dialog.open || document.querySelector('dialog[open]')) return;
     beforeOpen();
+    if (document.querySelector('dialog[open]')) return;
     resetGate(); update();
     dialog.showModal(); launcher.setAttribute('aria-expanded', 'true');
     (creator ? $('#predictionTitle') : $('#predictCode')).focus();

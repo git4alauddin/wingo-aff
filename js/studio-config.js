@@ -18,5 +18,6 @@ export const studioConfig = Object.freeze({
     9, 6, 5, 1, 4, 0, 8, 3, 2, 7,
   ],
   historyLimit: 500,
+  resultPopup: { autoClose: true, autoCloseSeconds: 3 },
   disclaimer: 'CREATOR STUDIO · DEMO SIMULATION · VIRTUAL CREDITS',
 });

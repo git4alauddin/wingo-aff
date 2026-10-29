@@ -7,7 +7,7 @@ export const config = Object.freeze({
   minimumDeposit: 1000,
   depositCurrency: 'INR',
   popupDelayMs: 1000,
-  sequence: { fillMs: 3600, holdMs: 450, unlockMs: 250 },
+  sequence: { fillMs: 1800, holdMs: 300, unlockMs: 0 },
   guidance: { enabled: true, src: './assets/audio/wingo_guide.mp3' },
   copyCodeDemo: {
     heading: 'Already deposited?', caption: 'Visual demo', buttonText: 'Copy Code',

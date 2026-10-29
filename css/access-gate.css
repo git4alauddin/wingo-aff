@@ -1,0 +1,51 @@
+/* One access-card theme for Studio entry and visitor prediction access. */
+.gate-card {
+  max-width: 410px;
+  width: 100%;
+  padding: 32px 35px;
+  background: linear-gradient(140deg, #0c4031, #04281f);
+  border: 1px solid #3f654d;
+  border-radius: 20px;
+  color: var(--text);
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+  box-shadow: 0 20px 110px #0005;
+}
+.gate-card .brand img { width: 153px; height: 36px; }
+.gate-art { position: relative; display: grid; place-items: center; height: 165px; }
+.gate-art-ring { position: absolute; inset: 15px auto; width: 150px; height: 150px; border: 1px dashed #c7c77940; border-radius: 50%; z-index: 0; }
+.gate-art .ball { z-index: 1; }
+.gate-card .eyebrow { margin: 10px 0; color: var(--gold); font-size: 10px; letter-spacing: 2px; font-weight: 700; }
+.gate-card .auth-title { color: var(--text); font-family: Arial, Helvetica, sans-serif; font-size: 32px; font-weight: 500; letter-spacing: -1.3px; line-height: normal; margin: 12px 0; }
+.gate-card .muted { max-width: none; color: var(--muted); font-family: inherit; font-size: 13px; line-height: 1.8; margin: 13px 0; }
+.gate-card form { text-align: left; margin-top: 26px; }
+.gate-card label { display: block; font-size: 12px; color: #b4cdbf; margin: 0 0 9px; letter-spacing: normal; }
+.gate-card input { display: block; box-sizing: border-box; width: 100%; min-height: 44px; padding: 12px; border: 1px solid var(--line); border-radius: 8px; background: #04251e; color: var(--text); font-family: inherit; font-size: 16px; letter-spacing: normal; line-height: normal; caret-color: var(--text); }
+.gate-card input:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
+.gate-card input[aria-invalid="true"] { border-color: #ff9e9e; }
+.gate-card .primary { display: flex; align-items: center; justify-content: space-between; gap: 8px; width: 100%; min-height: 44px; margin: 14px 0 24px; padding: 12px 20px; border: 1px solid #35c596; border-radius: 9px; background: linear-gradient(135deg, #1dcc91, #07845c); color: white; font-family: inherit; font-size: 16px; line-height: normal; font-weight: 700; cursor: pointer; }
+.gate-card .primary:hover { background: linear-gradient(135deg, #24d99d, #099469); }
+.gate-card .primary:disabled { cursor: not-allowed; opacity: .5; }
+.gate-card .primary:focus-visible { outline: 2px solid var(--gold); outline-offset: 4px; }
+.gate-card .error, .gate-card .prediction-code-error { color: #ff9e9e; font-family: inherit; font-size: 13px; line-height: 1.5; margin: 10px 0 0; }
+.gate-back { display: inline; padding: 0; border: 0; background: none; color: #b9ccb9; font-family: inherit; font-size: 11px; text-decoration: underline; text-underline-offset: 4px; cursor: pointer; }
+.gate-footnote { font-size: 9px; letter-spacing: 1px; color: #80a997; margin: 24px 0 9px; }
+
+.prediction-dialog.gate-card { width: min(410px, calc(100% - 36px)); max-height: calc(100svh - 32px); padding: 32px 35px; border-color: #3f654d; border-radius: 20px; background: linear-gradient(140deg, #0c4031, #04281f); color: var(--text); font-family: Arial, Helvetica, sans-serif; box-shadow: 0 20px 110px #0005; }
+.prediction-dialog.gate-card::backdrop { background: #00150fe0; }
+.prediction-dialog.gate-card::before, .prediction-dialog.gate-card::after, .prediction-dialog.gate-card>.deposit-corners { display: none; }
+.prediction-dialog.gate-card>.deposit-header { position: absolute; top: 12px; right: 12px; z-index: 2; }
+.prediction-dialog.gate-card>.deposit-header>span { display: none; }
+.prediction-dialog.gate-card .deposit-close { width: 32px; height: 32px; border-color: var(--line); border-radius: 9px; background: #09392f; color: #c1d4cb; }
+.prediction-dialog.gate-card .deposit-close:hover { background: #10513f; color: var(--gold); }
+.gate-card .prediction-access { padding: 0; }
+.gate-card .prediction-admin-contact { background: #0a3b2d; border-color: #376248; border-left-color: var(--gold); color: #b4cdbf; font-family: inherit; }
+.gate-card .prediction-admin-contact h3 { color: var(--gold); }
+.gate-card .prediction-admin-caption { color: var(--muted); }
+.gate-card .prediction-admin-icon { background: #124b38; }
+.gate-card .prediction-admin-icon svg { stroke: var(--gold); }
+.gate-card .prediction-unlock-progress { padding: 12px 0 24px; }
+.gate-card .prediction-unlock-progress>p { color: #b4cdbf; font-family: inherit; font-size: 12px; }
+.gate-card .prediction-unlock-progress strong { color: var(--gold); }
+.gate-card .prediction-progressbar { height: 8px; border-color: var(--line); background: #04251e; }
+.gate-card .prediction-progressbar>span { background: linear-gradient(90deg, #18bd80, #f1c96b); }

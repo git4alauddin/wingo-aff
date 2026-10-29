@@ -101,7 +101,7 @@ export class WinGoEngine {
     const amount = Math.round(stake * 100) * multiplier;
     if (amount > Math.round(this.settings.maxStake * 100)) throw new Error(`Maximum total stake is ₹${this.settings.maxStake}.`);
     if (amount > this.balance) throw new Error('Insufficient virtual balance.');
-    const bet = { id: ++this.betSequence, period: state.period, room: state.seconds, selection: { ...selection }, amount, status: 'pending', payout: 0, fee: 0 };
+    const bet = { id: ++this.betSequence, period: state.period, room: state.seconds, createdAt: Date.now(), selection: { ...selection }, amount, status: 'pending', payout: 0, fee: 0 };
     this.balance -= amount;
     this.bets.unshift(bet);
     return bet;
