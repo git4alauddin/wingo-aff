@@ -19,5 +19,8 @@ export const studioConfig = Object.freeze({
   ],
   historyLimit: 500,
   resultPopup: { autoClose: true, autoCloseSeconds: 3 },
-  disclaimer: 'CREATOR STUDIO · DEMO SIMULATION · VIRTUAL CREDITS',
+  announcements: [
+    'Welcome to the DmFirst Games! Greetings and enjoy WinGo.',
+    'Please be sure to always use our official website to play.',
+  ],
 });

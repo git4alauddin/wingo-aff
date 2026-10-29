@@ -1,0 +1,42 @@
+/* Clock faces and countdown finishes matched to the supplied game references. */
+.room-tabs { gap:7px; margin-bottom:20px; }
+.room-tabs button { height:96px; border:0; border-radius:13px; background:#052e26; gap:6px; line-height:14px; }
+.room-tabs [aria-selected="true"] { background:linear-gradient(#0da87c,#056048); box-shadow:inset 0 1px 2px #b5ffd63d; }
+.room-tabs .clock-icon { display:block; width:36px; height:36px; border:0; border-radius:50%; font-size:0; background:transparent url('../assets/images/clock-idle.svg') center/contain no-repeat; box-shadow:none; }
+.room-tabs [aria-selected="true"] .clock-icon { background:transparent url('../assets/images/clock-active.svg') center/contain no-repeat; box-shadow:none; }
+.round-card { height:106px; padding:11px 12px 12px; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:0; }
+.round-left { gap:6px; padding-right:16px; }
+.round-left>span { font-size:12px; }
+.how-to { display:flex; align-items:center; justify-content:center; gap:4px; height:24px; padding:0 4px; font-size:12px; flex:none; }
+.how-to svg { width:14px; height:16px; }
+.round-right { padding-left:14px; font-size:14px; color:#fff; }
+#timerCaption { font-family:Arial,Helvetica,sans-serif; font-weight:700; font-size:12px; line-height:16px; white-space:nowrap; }
+.countdown { gap:4px; height:32px; }
+.countdown span { width:20px; height:32px; background:#003a30; color:#fff; font-family:'Times New Roman',Times,serif; font-size:20px; font-weight:700; line-height:1; font-variant-numeric:tabular-nums; }
+.countdown span:first-child { width:24px; padding-left:4px; clip-path:polygon(30% 0,100% 0,100% 100%,0 100%,0 30%); }
+.countdown span:last-child { width:24px; padding-right:4px; clip-path:polygon(0 0,100% 0,100% 70%,70% 100%,0 100%); }
+.countdown .colon,.countdown.urgent .colon { width:12px; background:#003a30; font-size:20px; }
+.countdown.urgent span { background:#003a30; color:#fff; }
+.period { font-size:14px; font-weight:700; line-height:16px; letter-spacing:0; }
+.recent-balls { gap:7px; }
+.recent-balls .ball { width:26px; height:26px; }
+.recent-balls .ball b { font-size:14px; }
+.betting-lock { background:#0009; backdrop-filter:none; gap:0; }
+.betting-lock strong { display:flex; align-items:center; justify-content:center; gap:10%; width:100%; line-height:1; text-shadow:none; }
+.betting-lock .lock-digit { display:grid; place-items:center; width:31%; max-width:115px; height:172px; border-radius:16px; background:#084b3e; color:#e7be55; font:700 150px/1 Arial,Helvetica,sans-serif; letter-spacing:0; text-transform:none; }
+.betting-lock>.sr-only { position:absolute; }
+@media(max-width:350px) {
+  .round-card { padding-inline:10px; }
+  .round-left { padding-right:8px; }
+  .round-right { padding-left:7px; }
+  #timerCaption { font-size:12px; }
+  .period { font-size:11px; }
+  .countdown { gap:3px; }
+  .countdown span { width:17px; height:30px; font-size:21px; }
+  .countdown span:first-child,.countdown span:last-child { width:20px; }
+  .countdown .colon { width:10px; font-size:21px; }
+  .recent-balls { gap:3px; }
+  .recent-balls .ball { width:23px; height:23px; }
+  .recent-balls .ball b { font-size:13px; }
+  .betting-lock .lock-digit { height:148px; font-size:126px; }
+}

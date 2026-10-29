@@ -1,5 +1,63 @@
 .game-shell { overflow:clip; }
-.game-header { position:sticky; top:0; z-index:12; margin:0 -10px; padding:0 10px; background:#052d25; }
+.game-shell { padding-inline:12px; background:#001b13; }
+.game-header { height:48px; margin-inline:-12px; padding-inline:12px; background:#052d25; display:grid; grid-template-columns:1fr auto 1fr; }
+.game-header>img { width:120px; height:34px; object-fit:contain; }
+.game-back { justify-self:start; display:grid; place-items:center; width:24px; height:44px; padding:0; color:#e7f2ee; }
+.game-back svg { width:11px; height:19px; }
+.game-header-actions { gap:10px; margin-right:10px; justify-self:end; display:flex; align-items:center; }
+.game-icon { display:grid; place-items:center; width:26px; height:44px; padding:0; color:#d5e5dd; }
+.game-icon svg { width:24px; height:24px; }
+#soundToggle svg { width:26px; height:26px; }
+.wallet-amount { gap:16px; }
+.wallet-amount button { display:grid; place-items:center; width:26px; height:32px; padding:0; color:#8ba99e; }
+.wallet-amount button svg { width:25px; height:24px; }
+.wallet-card { padding:14px 22px 16px; margin:19px 0 11px; background:#0a4b3c; border-radius:22px; }
+.wallet-amount strong { font-size:34px; color:#ffd65c; letter-spacing:0; }
+.wallet-caption { font-size:20px; margin:4px 0 18px; }
+.wallet-caption { gap:10px; }
+.wallet-caption svg { width:20px; height:19px; fill:none; stroke:none; color:#dbbd55; }
+.wallet-actions button { height:35px; padding:0; background:linear-gradient(#109e76,#07684f); }
+.wallet-actions button+button { background:#002c23; }
+.announcement { height:47px; border-radius:20px; margin-bottom:11px; padding:10px 28px 10px 16px; background:#052b23; font-size:13px; gap:12px; }
+.announcement>span { display:grid; place-items:center; width:16px; flex:none; }
+.announcement svg { width:16px; height:18px; }
+.announcement button { display:inline-flex; align-items:center; gap:12px; flex:none; font-size:12px; }
+.announcement button svg { width:7px; height:12px; }
+.announcement #announcementText { flex:1; min-width:0; height:20px; line-height:20px; margin:0; overflow:hidden; }
+.announcement-track { display:block; }
+.announcement-track>span { display:block; height:20px; line-height:20px; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
+.round-state { position:absolute; width:1px; height:1px; margin:-1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
+.betting-card { margin-top:11px; padding:8px; background:#052d24; }
+.color-buttons { gap:16px; }
+.color-buttons button { height:38px; font-size:14px; }
+.color-buttons .color-green { border-radius:0 11px 0 11px; background:#12b768; }
+.color-buttons .color-violet { border-radius:5px; background:#c563f4; }
+.color-buttons .color-red { border-radius:11px 0 11px 0; background:#ff535c; }
+.number-grid { margin:14px 0 12px; padding:10px 4px; gap:6px 4px; border-radius:11px; background:#000f09; }
+.number-grid .ball { width:56px; height:56px; }
+.stake-multipliers { gap:6px; margin-bottom:10px; }
+.stake-multipliers button { flex:1; height:32px; padding:0; font:12px 'Times New Roman',Times,serif; border-radius:8px; background:#00140e; color:#d7e5e1; }
+.stake-multipliers .random-button { flex:0 0 77px; height:38px; padding:0; font:12px Arial,Helvetica,sans-serif; color:#f6ce52; border-color:#d9b944; background:transparent; }
+.stake-multipliers .active { background:#12b96b; color:#fff; font-family:Arial,Helvetica,sans-serif; }
+.size-buttons { margin-inline:12px; }
+.size-buttons button { background:#ffa84e; }
+.size-buttons button+button { background:#6fa6ef; }
+.history-tabs { gap:15px; grid-template-columns:1.15fr 1fr 1.2fr; margin:13px 0; }
+.history-tabs button { font-size:14px; border-radius:12px; }
+@media(max-width:350px) {
+  .game-shell { padding-inline:8px; }
+  .wallet-card { padding-inline:16px; }
+  .wallet-amount strong { font-size:30px; }
+  .wallet-caption { font-size:17px; }
+  .announcement { padding-inline:12px; font-size:11px; }
+  .color-buttons { gap:12px; }
+  .number-grid .ball { width:46px; height:46px; }
+  .stake-multipliers { gap:3px; }
+  .stake-multipliers .random-button { flex-basis:65px; }
+  .history-tabs { gap:8px; }
+  .history-tabs button { font-size:12px; }
+}
+.game-header { position:sticky; top:0; z-index:12; margin:0 -12px; padding:0 12px; background:#052d25; }
 .my-history-tools { display:flex; justify-content:flex-end; padding:12px 12px 4px; }
 .my-history-tools button { display:flex; align-items:center; gap:5px; border:1px solid #c2a34e; border-radius:12px; padding:6px 9px; background:transparent; color:#dfc570; font-size:12px; }
 .my-history-tools button[aria-pressed="true"] { background:#c2a34e22; }

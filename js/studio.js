@@ -1,9 +1,10 @@
 import { studioConfig } from './studio-config.js';
-import { WinGoEngine, statistics } from './wingo-engine.js';
+import { WinGoEngine, statistics, resultFor } from './wingo-engine.js';
 import { mountPrediction } from './prediction.js';
 import { mountDraggableWidget } from './draggable-widget.js';
 import { mountRoundResults } from './round-results.js';
 import { mountBetHistory } from './bet-history.js';
+import { mountAnnouncements } from './announcements.js';
 import { ball, dots, money, numberText, roomLabel, bindDialog, toast } from './ui.js';
 
 const $ = selector => document.querySelector(selector);
@@ -32,7 +33,7 @@ function startStudio() {
   $$('.dialog:not(#resultDialog)').forEach(bindDialog);
   const roundResults = mountRoundResults($('#resultDialog'), studioConfig.resultPopup);
   const personalHistory = mountBetHistory($('#myHistory'));
-  $('#simulationRibbon').textContent = studioConfig.disclaimer;
+  const announcements = mountAnnouncements($('#announcementText'), studioConfig.announcements);
   $('#feeNote').textContent = `${studioConfig.serviceFee * 100}% service fee. Returns are calculated on the stake after this fee.`;
   $('#rulesFee').textContent = `This Studio applies a ${studioConfig.serviceFee * 100}% service fee to each stake. Multipliers include the returned stake and apply after the fee. Losing bets return zero.`;
   $('#betStake').min = studioConfig.minStake; $('#betStake').max = studioConfig.maxStake;
@@ -110,23 +111,42 @@ function startStudio() {
     const state = engine.snapshot();
     if (state.locked) return toast('This round is locked. Wait for the next period.');
     selection = nextSelection; betPeriod = state.period;
+    $('#betDialog').dataset.theme = selection.type === 'number' ? resultFor(selection.value).colors[0].toLowerCase() : selection.value.toLowerCase();
+    $('#betRoom').textContent = `WinGo ${roomLabel(state.seconds)}`;
     $('#betTitle').textContent = `Select ${selection.value}`;
     $('#betPeriod').textContent = `WIN GO ${roomLabel(state.seconds).toUpperCase()} · ${betPeriod}`;
     $('#betStake').value = studioConfig.defaultStake; $('#betMultiplier').value = multiplier;
+    $('#betAgree').checked = true;
     $('#betError').hidden = true; $('#betStake').setAttribute('aria-invalid', 'false'); $('#confirmBet').disabled = false;
-    updateBetTotal(); open($('#betDialog')); $('#betStake').focus();
+    updateBetTotal(); open($('#betDialog')); $('#betDialog [data-stake][aria-pressed="true"]')?.focus({ preventScroll:true });
   }
   function updateBetTotal() {
     const stake = Number($('#betStake').value), factor = Number($('#betMultiplier').value);
-    $('#betTotal').textContent = money(Number.isFinite(stake) && stake >= 0 ? Math.round(stake * 100) * factor : 0);
+    const validQuantity = Number.isInteger(factor) && factor >= 1 && factor <= 100;
+    $('#betTotal').textContent = money(Number.isFinite(stake) && stake >= 0 && validQuantity ? Math.round(stake * 100) * factor : 0);
+    $('#betMultiplier').setAttribute('aria-invalid', String(!validQuantity));
+    $$('[data-stake]').forEach(button => button.setAttribute('aria-pressed', String(Number(button.dataset.stake) === stake)));
+    $$('[data-bet-quantity]').forEach(button => button.setAttribute('aria-pressed', String(Number(button.dataset.betQuantity) === factor)));
+    $('#betDecrease').disabled = validQuantity && factor <= 1;
+    $('#betIncrease').disabled = validQuantity && factor >= 100;
   }
-  $('#betStake').addEventListener('input', updateBetTotal); $('#betMultiplier').addEventListener('change', updateBetTotal);
+  $('#betStake').addEventListener('input', updateBetTotal); $('#betMultiplier').addEventListener('input', updateBetTotal); $('#betMultiplier').addEventListener('change', updateBetTotal);
+  $$('[data-bet-quantity]').forEach(button => button.addEventListener('click', () => { $('#betMultiplier').value = button.dataset.betQuantity; updateBetTotal(); }));
+  function stepQuantity(step) {
+    const value = Number($('#betMultiplier').value);
+    $('#betMultiplier').value = Math.min(100, Math.max(1, Math.trunc(Number.isFinite(value) ? value : 1) + step));
+    updateBetTotal();
+  }
+  $('#betDecrease').addEventListener('click', () => stepQuantity(-1));
+  $('#betIncrease').addEventListener('click', () => stepQuantity(1));
+  $('#betRules').addEventListener('click', () => { $('#betDialog').close(); open($('#rulesDialog')); });
   $$('[data-stake]').forEach(button => button.addEventListener('click', () => { $('#betStake').value = button.dataset.stake; updateBetTotal(); }));
   $('#betForm').addEventListener('submit', event => {
     event.preventDefault(); advanceClock();
     try {
+      if (!$('#betAgree').checked) throw new Error('Agree to the pre-sale rules before placing a virtual bet.');
       engine.placeBet(selection, Number($('#betStake').value), Number($('#betMultiplier').value), betPeriod);
-      $('#betDialog').close(); renderWallet(); renderHistory(); toast(`Virtual bet placed on ${selection.value}.`);
+      $('#betDialog').close(); renderWallet(); renderHistory(); toast('Bet Successful', { variant: 'bet-success', duration: 2000 });
     } catch (error) { $('#betError').textContent = error.message; $('#betError').hidden = false; $('#betStake').setAttribute('aria-invalid', 'true'); }
   });
   function renderWallet() { $('#wallet').textContent = money(engine.balance); }
@@ -148,7 +168,9 @@ function startStudio() {
       $('#timerCaption').textContent = state.paused ? 'Paused' : 'Time remaining';
       const phase = state.paused ? 'Simulation paused' : state.locked ? 'Betting closed · Result in a moment' : 'Betting open';
       $('#roundState').textContent = phase;
-      $('#bettingLock').hidden = !state.locked; $('#lockCountdown').textContent = state.remaining;
+      $('#bettingLock').hidden = !state.locked;
+      $('#lockCountdown').innerHTML = String(state.remaining).padStart(2, '0').split('').map(digit => `<span class="lock-digit" aria-hidden="true">${digit}</span>`).join('');
+      $('#lockCountdown').setAttribute('aria-label', `${state.remaining} seconds remaining. Betting closed.`);
       $$('[data-selection],#randomBet').forEach(button => { button.disabled = state.locked; });
       if ($('#betDialog').open) {
         const stale = betPeriod !== state.period;
@@ -215,6 +237,6 @@ function startStudio() {
   render(true); frame = requestAnimationFrame(animate);
   window.addEventListener('resize', drawChart);
   document.addEventListener('visibilitychange', () => { if (!document.hidden) { advanceClock(); render(true); } });
-  window.addEventListener('pagehide', () => { cancelAnimationFrame(frame); prediction.destroy(); draggable.destroy(); roundResults.destroy(); personalHistory.destroy(); audioContext?.close(); }, { once: true });
+  window.addEventListener('pagehide', () => { cancelAnimationFrame(frame); prediction.destroy(); draggable.destroy(); roundResults.destroy(); personalHistory.destroy(); announcements.destroy(); audioContext?.close(); }, { once: true });
 }
 window.addEventListener('pageshow', event => { if (event.persisted) location.reload(); });

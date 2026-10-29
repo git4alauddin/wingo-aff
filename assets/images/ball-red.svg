@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="rim" x2="0" y2="1" gradientUnits="objectBoundingBox">
+      <stop stop-color="#ff9a9d"/><stop offset=".43" stop-color="#ff4b52"/>
+      <stop offset="1" stop-color="#b91e2a"/>
+    </linearGradient>
+    <linearGradient id="face" x2="0" y2="1"><stop stop-color="#fff"/><stop offset=".44" stop-color="#fff5f5"/><stop offset="1" stop-color="#ffb8bb"/></linearGradient>
+    <radialGradient id="gloss" cx=".37" cy=".15" r=".86"><stop stop-color="#fff" stop-opacity=".28"/><stop offset=".6" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".12"/></radialGradient>
+  </defs>
+  <circle cx="50" cy="50" r="49.5" fill="url(#rim)"/>
+  <circle cx="50" cy="50" r="49.5" fill="url(#gloss)"/>
+  <path d="M32 4 Q50 -2 68 4 Q52 15 32 4Z" fill="#fff" opacity=".95"/>
+  <path d="M7 28 Q-4 50 9 75 Q18 51 7 28Z" fill="#fff" opacity=".85"/>
+  <path d="M93 27 Q104 50 92 75 Q83 50 93 27Z" fill="#fff" opacity=".8"/>
+  <path d="M32 96 Q50 85 68 96 Q50 103 32 96Z" fill="#fff" opacity=".44"/>
+  <circle cx="50" cy="50" r="39.5" fill="#fff" opacity=".3"/>
+  <circle cx="50" cy="50" r="37.5" fill="url(#face)"/>
+  <path d="M17 33 Q26 10 50 11 Q74 11 83 33" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="1.5"/>
+</svg>

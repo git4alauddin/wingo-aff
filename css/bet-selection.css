@@ -1,0 +1,51 @@
+/* Selection sheet matched to ref_image/select. */
+.toast[data-variant="bet-success"] {
+  top:50%; bottom:auto; transform:translate(-50%,-50%);
+  padding:10px 13px; border-radius:6px; background:#000c; color:white;
+  font:14px/18px Arial,Helvetica,sans-serif; box-shadow:none; pointer-events:none;
+}
+.bet-dialog {
+  --selection:#12b76a; --selection-header:linear-gradient(110deg,#3baa73,#43ba80);
+  position:fixed; inset:auto 0 0; margin:0 auto; width:min(430px,100%); max-width:100%;
+  max-height:100svh; border:0; border-radius:16px 16px 0 0; padding:0;
+  background:#000e09; color:#ffd44f; box-shadow:none; overflow:auto;
+  font-family:Arial,Helvetica,sans-serif;
+}
+.bet-dialog[data-theme="red"] { --selection:#ff525b; --selection-header:linear-gradient(110deg,#ff4b51,#ff606b); }
+.bet-dialog[data-theme="violet"] { --selection:#b35be0; --selection-header:linear-gradient(110deg,#a14bd4,#c47aef); }
+.bet-dialog[data-theme="small"] { --selection:#6da6ef; --selection-header:linear-gradient(110deg,#6ba4ee,#86baf4); }
+.bet-dialog[data-theme="big"] { --selection:#f4a54b; --selection-header:linear-gradient(110deg,#ef9c3b,#ffb866); }
+.bet-dialog::backdrop { background:#000c; backdrop-filter:none; }
+.bet-sheet-header { height:102px; padding:16px 13% 34px; text-align:center; background:var(--selection-header); color:white; clip-path:polygon(0 0,100% 0,100% 70%,50% 100%,0 70%); }
+.bet-sheet-header p { font-size:14px; font-weight:600; margin:0 0 9px; line-height:16px; }
+.bet-sheet-header h2 { margin:0; background:white; color:#111; border-radius:5px; padding:5px; font-size:14px; line-height:17px; font-weight:400; }
+.bet-sheet-body { padding:27px 15px 22px; }
+.bet-sheet-row { display:flex; align-items:center; justify-content:space-between; gap:12px; min-height:32px; margin:0 0 10px; }
+.bet-sheet-row>label,.bet-sheet-row>span { font-size:16px; margin:0; }
+.bet-balance-options { display:flex; gap:5px; }
+.bet-balance-options button,.bet-quantity-options button { border:0; border-radius:5px; background:#084b3e; color:#ffd44f; font-size:13px; height:31px; min-width:33px; padding:0 10px; }
+.bet-balance-options button[aria-pressed="true"],.bet-quantity-options button[aria-pressed="true"] { background:var(--selection); color:white; border-radius:0; }
+.bet-quantity { display:flex; align-items:center; gap:13px; }
+.bet-quantity button { border:0; border-radius:5px; background:var(--selection); color:white; font-size:18px; width:27px; height:31px; padding:0; }
+.bet-quantity input { width:84px; height:31px; padding:3px; text-align:center; border:1px solid #07513f; border-radius:0; background:transparent; color:#ffd44f; font-size:16px; appearance:textfield; }
+.bet-quantity input::-webkit-inner-spin-button,.bet-quantity input::-webkit-outer-spin-button { -webkit-appearance:none; margin:0; }
+.bet-quantity-options { display:flex; justify-content:flex-end; gap:6px; }
+.bet-quantity-options button { min-width:0; flex:0 1 44px; padding:0 5px; }
+.bet-agreement { display:flex; align-items:center; gap:5px; margin-top:19px; font-size:12px; color:#d4e4dc; }
+.bet-agreement label { display:flex; align-items:center; gap:8px; }
+.bet-agreement input { appearance:none; display:grid; place-content:center; width:20px; height:20px; margin:0; padding:0; border:1px solid #e2bc56; border-radius:50%; background:transparent; cursor:pointer; }
+.bet-agreement input:checked { background:#e2bc56; }
+.bet-agreement input:checked::after { content:''; width:10px; height:6px; border-left:3px solid white; border-bottom:3px solid white; transform:translateY(-1px) rotate(-45deg); }
+.bet-agreement button { border:0; background:none; color:#ff535b; padding:5px 0; font-size:12px; }
+.bet-notice { font-size:10px; color:#91a89b; margin:12px 0 0; text-align:center; }
+.bet-sheet-body .error { margin:10px 0 0; }
+.bet-sheet-footer { display:grid; grid-template-columns:1fr 2fr; padding-bottom:env(safe-area-inset-bottom); background:var(--selection); }
+.bet-sheet-footer button { min-height:40px; border:0; border-radius:0; background:#084b3e; color:#b8d8d9; font-size:14px; padding:10px 6px; }
+.bet-sheet-footer #confirmBet { background:var(--selection); color:white; }
+.bet-dialog :focus-visible { outline:2px solid #ffe28b; outline-offset:2px; }
+@media(max-width:350px) {
+  .bet-sheet-body { padding-inline:12px; }
+  .bet-balance-options button { padding-inline:8px; min-width:30px; }
+  .bet-sheet-row { gap:6px; }
+  .bet-quantity-options { gap:5px; }
+}

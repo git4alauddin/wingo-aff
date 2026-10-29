@@ -164,6 +164,63 @@ try {
   assert.equal(await evaluate("document.querySelectorAll('.studio-float').length"), 1);
   assert.equal(await evaluate("document.querySelectorAll('#numberGrid button').length"), 10);
   await screenshot('studio-desktop');
+  const noticeText = "document.querySelector('#announcementText .announcement-track>span').textContent";
+  const welcomeNotice = 'Welcome to the DmFirst Games! Greetings and enjoy WinGo.';
+  const officialNotice = 'Please be sure to always use our official website to play.';
+  assert.equal(await evaluate(noticeText), welcomeNotice);
+  await waitFor(`${noticeText}===${JSON.stringify(officialNotice)}`);
+  await screenshot('announcement-official-desktop');
+  await send('Emulation.setEmulatedMedia', {features:[{name:'prefers-reduced-motion',value:'reduce'}]});
+  await waitFor(`${noticeText}===${JSON.stringify(welcomeNotice)}`);
+  assert.equal(await evaluate("document.querySelector('.announcement-track').getAnimations().length"),0,'Reduced motion switches messages without sliding');
+  await send('Emulation.setEmulatedMedia', {features:[]});
+  for (const width of [393,320]) {
+    await send('Emulation.setDeviceMetricsOverride', {width,height:900,deviceScaleFactor:1,mobile:true});
+    await evaluate('scrollTo(0,0)');
+    await screenshot(`game-controls-mobile-${width}`);
+    assert.equal(await evaluate('document.documentElement.scrollWidth<=innerWidth'),true,`${width}px refined controls fit viewport`);
+  }
+  await send('Emulation.setDeviceMetricsOverride', {width:1440,height:1050,deviceScaleFactor:1,mobile:false});
+  // Selection sheets keep every choice on theme and preserve the stake calculation.
+  for (const [choice, theme] of [['size:Small','small'],['number:9','green'],['color:Green','green'],['number:2','red'],['color:Red','red'],['color:Violet','violet'],['number:0','red'],['number:5','green'],['size:Big','big']]) {
+    await click(`[data-selection="${choice}"]`);
+    assert.equal(await evaluate("document.querySelector('#betDialog').dataset.theme"), theme);
+    assert.equal(await evaluate("document.querySelector('#betTitle').textContent"), `Select ${choice.split(':')[1]}`);
+    if (choice === 'size:Small') await screenshot('selection-small-desktop');
+    await click('#betDialog [data-close]');
+  }
+  for (const width of [393,320]) {
+    await send('Emulation.setDeviceMetricsOverride', {width,height:900,deviceScaleFactor:1,mobile:true});
+    for (const [choice,name] of [['size:Small','small'],['number:9','number-green'],['color:Green','green'],['number:2','red'],['color:Violet','violet'],['size:Big','big']]) {
+      await click(`[data-selection="${choice}"]`);
+      assert.equal(await evaluate("(() => {const r=document.querySelector('#betDialog').getBoundingClientRect();return r.left>=0 && r.right<=innerWidth && Math.abs(r.bottom-innerHeight)<2 && r.top>=0;})()"),true,`${width}px selection sheet fits viewport`);
+      await screenshot(`selection-${name}-mobile-${width}`);
+      await click('#betDialog [data-close]');
+    }
+  }
+  await click('[data-selection="color:Green"]');
+  await click('[data-stake="100"]'); await click('[data-bet-quantity="5"]');
+  assert.equal(await evaluate("document.querySelector('#betTotal').textContent"), '₹500.00');
+  await click('#betIncrease');
+  assert.equal(await evaluate("document.querySelector('#betTotal').textContent"), '₹600.00');
+  await click('#betDecrease');
+  assert.equal(await evaluate("document.querySelector('#betMultiplier').value"), '5');
+  await fill('#betMultiplier','2'); await evaluate("document.querySelector('#betMultiplier').dispatchEvent(new Event('input'))");
+  assert.equal(await evaluate("document.querySelector('#betTotal').textContent"), '₹200.00');
+  await fill('#betMultiplier','0'); await evaluate("document.querySelector('#betForm').requestSubmit()");
+  assert.equal(await evaluate("document.querySelector('#betError').hidden"),false);
+  await click('[data-bet-quantity="1"]'); await click('#betAgree');
+  await evaluate("document.querySelector('#betForm').requestSubmit()");
+  assert.match(await evaluate("document.querySelector('#betError').textContent"),/Agree/);
+  assert.equal(await evaluate("document.querySelector('#wallet').textContent"),'₹29,999.00','Invalid quantity and missing agreement leave balance unchanged');
+  await click('#betRules');
+  assert.equal(await evaluate("document.querySelector('#rulesDialog').open && !document.querySelector('#betDialog').open"),true);
+  await click('#rulesDialog [data-close]');
+  await click('[data-selection="color:Red"]');
+  await send('Input.dispatchKeyEvent',{type:'keyDown',key:'Escape',code:'Escape',windowsVirtualKeyCode:27,nativeVirtualKeyCode:27});
+  await send('Input.dispatchKeyEvent',{type:'keyUp',key:'Escape',code:'Escape',windowsVirtualKeyCode:27,nativeVirtualKeyCode:27});
+  await waitFor("!document.querySelector('#betDialog').open");
+  await send('Emulation.setDeviceMetricsOverride', {width:1440,height:1050,deviceScaleFactor:1,mobile:false});
   await click('#predictLauncher'); await click('#predictRun');
   await waitFor("document.querySelector('#predictResult').dataset.numbers==='7,9'");
   assert.equal(await evaluate("document.querySelector('#predictAccess').hidden"), true);
@@ -172,6 +229,15 @@ try {
   const firstPrediction = await revealedPrediction();
   await screenshot('studio-prediction'); await click('#predictionDialog [data-close]');
   await click('[data-selection="number:7"]'); await evaluate("document.querySelector('#betForm').requestSubmit()");
+  assert.equal(await evaluate("document.querySelector('#betDialog').open"), false);
+  assert.equal(await evaluate("!document.querySelector('#toast').hidden && document.querySelector('#toast').textContent==='Bet Successful'"), true);
+  assert.equal(await evaluate("getComputedStyle(document.querySelector('#toast')).backgroundColor"), 'rgba(0, 0, 0, 0.8)');
+  await screenshot('bet-success-desktop');
+  await send('Emulation.setDeviceMetricsOverride', {width:393,height:900,deviceScaleFactor:1,mobile:true});
+  await screenshot('bet-success-mobile');
+  assert.equal(await evaluate("(() => {const r=document.querySelector('#toast').getBoundingClientRect();return Math.abs(r.left+r.width/2-innerWidth/2)<1 && Math.abs(r.top+r.height/2-innerHeight/2)<1;})()"),true,'Success confirmation is centered');
+  await waitFor("document.querySelector('#toast').hidden");
+  await send('Emulation.setDeviceMetricsOverride', {width:1440,height:1050,deviceScaleFactor:1,mobile:false});
   assert.equal(await evaluate("document.querySelector('#wallet').textContent"), '₹29,989.00');
   await advance(60000); await waitFor("document.querySelector('#resultDialog').open");
   assert.equal(await evaluate("document.querySelector('#resultDialog').dataset.outcome"), 'won');
@@ -201,8 +267,21 @@ try {
   await advance(25000);
   await waitFor("!document.querySelector('#bettingLock').hidden");
   assert.equal(await evaluate("document.querySelector('[data-selection]').disabled"), true);
+  assert.equal(await evaluate("document.querySelector('#lockCountdown').textContent"), '05');
+  assert.equal(await evaluate("document.querySelector('#countdown').textContent"), '00:05');
+  await waitFor("document.querySelector('#toast').hidden");
   await screenshot('studio-locked');
-  await advance(5000);
+  await advance(2000);
+  assert.equal(await evaluate("document.querySelector('#lockCountdown').textContent"), '03');
+  for (const width of [393,320]) {
+    await send('Emulation.setDeviceMetricsOverride', {width,height:900,deviceScaleFactor:1,mobile:true});
+    await evaluate("document.querySelector('.betting-card').scrollIntoView({block:'center'})");
+    await screenshot(`countdown-03-mobile-${width}`);
+    assert.equal(await evaluate("(() => {const digits=[...document.querySelectorAll('.lock-digit')].map(el=>el.getBoundingClientRect()), card=document.querySelector('.betting-card').getBoundingClientRect();return digits.length===2 && digits.every(r=>r.left>=card.left && r.right<=card.right && r.top>=card.top && r.bottom<=card.bottom);})()"),true,`${width}px countdown digits fit card`);
+  }
+  await send('Emulation.setDeviceMetricsOverride', {width:1440,height:1050,deviceScaleFactor:1,mobile:false});
+  await evaluate('scrollTo(0,0)');
+  await advance(3000);
   await waitFor("document.querySelector('#bettingLock').hidden");
   await click('#room60');
   await click('#predictLauncher'); await click('#predictRun');

@@ -19,11 +19,12 @@ export function bindDialog(dialog) {
   });
 }
 let toastTimer;
-export function toast(text) {
+export function toast(text, { variant = '', duration = 3500 } = {}) {
   const element = document.querySelector('#toast');
   if (!element) return;
   clearTimeout(toastTimer);
+  element.dataset.variant = variant;
   element.textContent = text;
   element.hidden = false;
-  toastTimer = setTimeout(() => { element.hidden = true; }, 3500);
+  toastTimer = setTimeout(() => { element.hidden = true; }, duration);
 }
