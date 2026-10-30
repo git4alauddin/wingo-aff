@@ -81,6 +81,7 @@
 }
 
 .prediction-reel-number { --reel-height: 94px; }
+.prediction-reel[data-obscured="true"] { filter: blur(10px); user-select: none; }
 .prediction-reel-track { display: flex; flex-direction: column; }
 
 .prediction-reel-cell {

@@ -246,7 +246,13 @@ try {
   assert.equal(await evaluate("document.querySelector('#resultAmount').textContent"), '₹88.20');
   assert.equal(await evaluate("document.querySelector('#resultAutoClose').checked"), true);
   await click('#resultAutoClose');
+  assert.equal(await evaluate("document.querySelectorAll('.result-confetti i').length"), 96, 'Win launches a single paper burst');
+  assert.equal(await evaluate("document.querySelector('.result-confetti').inert && getComputedStyle(document.querySelector('.result-confetti')).pointerEvents==='none'"), true, 'Paper never blocks the receipt controls');
+  await evaluate("document.querySelector('.result-confetti').getAnimations({subtree:true}).forEach(animation=>{animation.pause();animation.currentTime=300})");
+  await screenshot('win-confetti-burst-desktop');
   await screenshot('result-win-desktop');
+  await waitFor("!document.querySelector('.result-confetti').matches(':popover-open')");
+  assert.equal(await evaluate("document.querySelector('.result-confetti').children.length"), 0, 'The short reference burst clears without closing the receipt');
   assert.equal(await evaluate("document.querySelector('#wallet').textContent"), '₹30,077.20');
   assert.equal(await evaluate("document.querySelector('#historyRows tr td:nth-child(2)').textContent"), '7');
   assertMatches(firstPrediction, await settledResult());

@@ -51,15 +51,7 @@
 .result-close:hover { background:#124f42; }
 .result-confetti { position:fixed; inset:0; width:100vw; height:100dvh; max-width:none; max-height:none; margin:0; padding:0; border:0; background:transparent; overflow:hidden; pointer-events:none; }
 .result-confetti::backdrop { background:transparent; pointer-events:none; }
-.result-confetti i { position:absolute; top:-16px; left:var(--x); width:5px; height:9px; background:var(--piece-color); opacity:0; animation:result-confetti-fall var(--duration) var(--delay) linear both; }
-.result-confetti i:nth-child(3n) { width:7px; height:7px; }
-.result-confetti i:nth-child(4n) { width:3px; height:6px; }
-@keyframes result-confetti-fall {
-  0% { opacity:0; transform:translate3d(0,0,0) rotate(0); }
-  8% { opacity:1; }
-  82% { opacity:1; }
-  100% { opacity:0; transform:translate3d(var(--drift),100dvh,0) rotate(var(--spin)); }
-}
+.result-confetti i { position:absolute; top:0; left:0; pointer-events:none; backface-visibility:visible; }
 @keyframes result-arrive { from { opacity:0; transform:translateY(18px) scale(.95); } to { opacity:1; transform:translateY(0) scale(1); } }
 @media(max-width:390px) { .result-dialog { padding-inline:15px; width:min(320px,calc(100% - 20px)); }.result-card { padding-inline:13px; }.result-card h2 { font-size:20px; }.lottery-result { gap:4px; font-size:10px; }.lottery-tag { font-size:11px; padding:4px; }.lottery-tag.number { font-size:13px; padding:0; }.receipt-paper #resultAmount { font-size:22px; } }
 @media(max-height:600px) { .result-card { padding-bottom:26px; }.result-card h2 { margin-bottom:31px; }.result-receipt { margin-bottom:28px; } }

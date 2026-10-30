@@ -25,6 +25,7 @@ export function mountPrediction({ launcher, snapshot, creator = false, beforePre
   let displayedKey, runId = 0, cancelUnlock = () => {};
   const key = state => `${state.seconds}:${state.period}:${creator ? state.result.number : state.settlement.numbers.join(',')}`;
   const reels = mountPredictionReels(dialog, predictionConfig, Math.random, {
+    ...(creator ? { selectVisibleNumber: () => snapshot().result.number } : {}),
     selectSettlement() {
       beforePredict(); update();
       const state = snapshot();

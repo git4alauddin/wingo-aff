@@ -3,6 +3,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {chooseSettlement, mountPredictionReels} from "../js/prediction-reels.js";
 import {predictionConfig} from "../js/prediction-config.js";
+import {settlementForNumber} from "../js/prediction-model.js";
 
 const flush = () => new Promise(resolve => setImmediate(resolve));
 const expected = [
@@ -12,7 +13,7 @@ const expected = [
     {numbers: [7, 9], size: "Big", color: "Green"},
 ];
 
-function fixture({reduced = false, random = () => 0, settings = {}} = {}) {
+function fixture({reduced = false, random = () => 0, settings = {}, hooks = {}} = {}) {
     class Element extends EventTarget {
         constructor() {super(); this.attributes = new Map(); this.dataset = {}; this.children = []; this.classList = {add() {}};}
         setAttribute(key, value) {this.attributes.set(key, value);}
@@ -50,9 +51,36 @@ function fixture({reduced = false, random = () => 0, settings = {}} = {}) {
         querySelector: selector => ({"[data-predict]": predict, "[data-prediction-content]": results, "[data-prediction-spin-status]": status,
             "[data-prediction-ready-banner]": banner, "[data-prediction-ready-text]": bannerText})[selector],
         querySelectorAll: () => reels};
-    const controller = mountPredictionReels(dialog, {...predictionConfig, ...settings}, random);
+    const controller = mountPredictionReels(dialog, {...predictionConfig, ...settings}, random, hooks);
     return {controller, predict, results, status, tracks, reels, animations, motion, dialog, banner, bannerText};
 }
+
+test("Studio reveals only the actual result across both slots and all ten digits", async () => {
+    for (let number = 0; number <= 9; number++) {
+        const row = settlementForNumber(number);
+        const visible = row.numbers.indexOf(number);
+        const state = fixture({hooks: {
+            selectSettlement: () => row,
+            selectVisibleNumber: () => number,
+        }});
+        state.controller.enable();
+        state.predict.dispatchEvent(new Event("click"));
+        assert.equal(state.animations.length, 4, "Every component still animates");
+        assert.deepEqual(state.reels.map(reel => reel.dataset.obscured),
+            [0, 1, 2, 3].map(index => String(index !== visible)));
+        state.animations.forEach(animation => animation.done());
+        await flush();
+        assert.equal(state.status.textContent, `${number}.`, "The summary exposes only the final number");
+        assert.deepEqual(state.reels.map(reel => reel.getAttribute("aria-label")), [
+            `First number: ${visible === 0 ? number : "Blurred"}`,
+            `Second number: ${visible === 1 ? number : "Blurred"}`,
+            "Size: Blurred", "Color: Blurred",
+        ]);
+        state.controller.reset();
+        assert.ok(state.reels.every(reel => reel.dataset.obscured === "true"));
+        state.controller.destroy();
+    }
+});
 
 test("selection can only return one of the four complete configured combinations", () => {
     assert.deepEqual(predictionConfig.settlements, expected);

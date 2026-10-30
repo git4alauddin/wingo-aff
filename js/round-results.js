@@ -1,5 +1,6 @@
 import { bindDialog, money, roomLabel } from './ui.js';
 import { resultMarkup } from './result-markup.js';
+import { mountWinConfetti } from './result-confetti.js';
 
 /** Summarize only settled bets belonging to this exact room and period. */
 export function summarizeRound(result, bets) {
@@ -22,28 +23,10 @@ export function mountRoundResults(dialog, settings = {}) {
   let automatic = settings.autoClose !== false;
   const checkbox = $('#resultAutoClose');
   checkbox.checked = automatic;
-  const confetti = page.createElement('div');
-  confetti.className = 'result-confetti';
-  confetti.setAttribute('popover', 'manual');
-  confetti.setAttribute('aria-hidden', 'true');
-  confetti.inert = true;
-  const confettiColors = ['#ffdc67', '#ff464b', '#3edb90', '#d94fe7'];
-  for (let index = 0; index < 52; index++) {
-    const piece = page.createElement('i');
-    piece.style.cssText = `--x:${(index * 47 + 13) % 100}%;--drift:${(index * 71 % 220) - 110}px;--delay:${index % 8 * .055}s;--duration:${2.3 + index % 6 * .13}s;--spin:${360 + index % 5 * 180}deg;--piece-color:${confettiColors[index % confettiColors.length]}`;
-    confetti.append(piece);
-  }
-  page.body.append(confetti);
-  let confettiTimer;
-  function stopConfetti() {
-    clearTimeout(confettiTimer);
-    if (confetti.hidePopover && confetti.matches(':popover-open')) confetti.hidePopover();
-  }
+  const confetti = mountWinConfetti(page);
   function celebrate() {
-    stopConfetti();
-    if (current.outcome !== 'won' || page.defaultView?.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches || !confetti.showPopover) return;
-    confetti.showPopover();
-    confettiTimer = setTimeout(stopConfetti, 3400);
+    if (current.outcome === 'won') confetti.play($('.result-trophy-won'));
+    else confetti.stop();
   }
 
   function label() {
@@ -88,7 +71,7 @@ export function mountRoundResults(dialog, settings = {}) {
     dialog.showModal(); startTimer(); celebrate();
   }
   function onClose(event) {
-    if (event.target === dialog && !dialog.open) { stopTimer(); stopConfetti(); current = null; }
+    if (event.target === dialog && !dialog.open) { stopTimer(); confetti.stop(); current = null; }
     queueMicrotask(pump);
   }
   function onToggle() { automatic = checkbox.checked; remaining = seconds * 1000; label(); startTimer(); }
@@ -103,7 +86,7 @@ export function mountRoundResults(dialog, settings = {}) {
       seen.add(key); queue.push(row); pump();
     },
     destroy() {
-      destroyed = true; stopTimer(); stopConfetti(); confetti.remove(); queue.length = 0;
+      destroyed = true; stopTimer(); confetti.destroy(); queue.length = 0;
       page.removeEventListener('close', onClose, true);
       page.removeEventListener('visibilitychange', visibilityChanged);
       checkbox.removeEventListener('change', onToggle);

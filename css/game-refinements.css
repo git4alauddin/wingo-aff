@@ -10,7 +10,7 @@
 #soundToggle svg { width:26px; height:26px; }
 .wallet-amount { gap:16px; }
 .wallet-amount button { display:grid; place-items:center; width:26px; height:32px; padding:0; color:#8ba99e; }
-.wallet-amount button svg { width:22px; height:20px; }
+.wallet-amount button svg { width:26px; height:20px; }
 .wallet-card { padding:14px 22px 16px; margin:19px 0 11px; background:#0a4b3c; border-radius:22px; }
 .wallet-amount strong { font-size:34px; color:#ffd65c; letter-spacing:0; font-variant-numeric:tabular-nums; }
 .wallet-caption { font-size:20px; margin:4px 0 18px; }

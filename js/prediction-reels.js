@@ -31,6 +31,8 @@ export function mountPredictionReels(dialog, settings = predictionConfig, random
     let runId = 0;
     let current = null;
     let selected = null;
+    const singleNumber = typeof hooks.selectVisibleNumber === "function";
+    let visibleIndex = singleNumber ? -1 : null;
     const sequences = [Array.from({length: 10}, (_, n) => n), Array.from({length: 10}, (_, n) => n),
         ["Small", "Big"], ["Green", "Violet", "Red"]];
     const labels = [text.firstNumberLabel, text.secondNumberLabel, text.sizeAriaLabel, text.colorAriaLabel];
@@ -72,10 +74,21 @@ export function mountPredictionReels(dialog, settings = predictionConfig, random
         return cell;
     }
 
+    function reelLabel(index, value) {
+        return `${labels[index]}: ${singleNumber && index !== visibleIndex ? "Blurred" : value === null ? text.awaitingSelection : displayValue(value)}`;
+    }
+
+    function updateVisibility() {
+        reels.forEach((reel, index) => {
+            reel.dataset.obscured = String(singleNumber && index !== visibleIndex);
+            if (singleNumber && index !== visibleIndex) reel.setAttribute("aria-label", reelLabel(index, null));
+        });
+    }
+
     function renderRow(row) {
         values(row).forEach((value, index) => {
             tracks[index].replaceChildren(makeCell(index, value));
-            reels[index].setAttribute("aria-label", `${labels[index]}: ${value === null ? text.awaitingSelection : displayValue(value)}`);
+            reels[index].setAttribute("aria-label", reelLabel(index, value));
         });
     }
 
@@ -96,7 +109,8 @@ export function mountPredictionReels(dialog, settings = predictionConfig, random
         predict.disabled = !enabled;
         predict.textContent = text.predictAgainButton;
         const result = {first: current.numbers[0], second: current.numbers[1], size: displayValue(current.size), color: displayValue(current.color)};
-        status.textContent = text.resultStatus.replace(/\{(first|second|size|color)\}/g, (_, key) => result[key]);
+        status.textContent = singleNumber ? `${current.numbers[visibleIndex]}.`
+            : text.resultStatus.replace(/\{(first|second|size|color)\}/g, (_, key) => result[key]);
         banner.hidden = bannerSettings.enabled !== true;
         results.dataset.numbers = current.numbers.join(',');
         results.dataset.size = current.size;
@@ -107,6 +121,8 @@ export function mountPredictionReels(dialog, settings = predictionConfig, random
         if (destroyed || !enabled || busy || !dialog.open) return;
         selected = hooks.selectSettlement ? hooks.selectSettlement() : chooseSettlement(random, settlements);
         if (!selected) return;
+        visibleIndex = singleNumber ? selected.numbers.indexOf(hooks.selectVisibleNumber(selected)) : null;
+        updateVisibility();
         banner.hidden = true;
         busy = true;
         const run = ++runId;
@@ -141,7 +157,7 @@ export function mountPredictionReels(dialog, settings = predictionConfig, random
                 if (destroyed || run !== runId) return;
                 track.replaceChildren(makeCell(index, finalValues[index]));
                 animation.cancel();
-                reels[index].setAttribute("aria-label", `${labels[index]}: ${displayValue(finalValues[index])}`);
+                reels[index].setAttribute("aria-label", reelLabel(index, finalValues[index]));
             }).catch(() => {});
         });
         await Promise.all(finished);
@@ -157,6 +173,8 @@ export function mountPredictionReels(dialog, settings = predictionConfig, random
         cancel();
         current = null;
         selected = null;
+        visibleIndex = singleNumber ? -1 : null;
+        updateVisibility();
         renderRow(null);
         predict.disabled = true;
         predict.textContent = text.predictButton;
