@@ -241,6 +241,8 @@ try {
   assert.equal(await evaluate("document.querySelector('#wallet').textContent"), '₹29,989.00');
   await advance(60000); await waitFor("document.querySelector('#resultDialog').open");
   assert.equal(await evaluate("document.querySelector('#resultDialog').dataset.outcome"), 'won');
+  assert.equal(await evaluate("document.querySelector('.result-confetti').matches(':popover-open')"), true, 'Winning receipt starts confetti');
+  assert.equal(await evaluate("document.querySelector('.result-trophy-won').complete && document.querySelector('.result-trophy-won').naturalWidth === 328"), true, 'Original win crest loads');
   assert.equal(await evaluate("document.querySelector('#resultAmount').textContent"), '₹88.20');
   assert.equal(await evaluate("document.querySelector('#resultAutoClose').checked"), true);
   await click('#resultAutoClose');
@@ -291,6 +293,8 @@ try {
   await advance(30000); assertMatches(secondPrediction, await settledResult());
   await waitFor("document.querySelector('#resultDialog').open");
   assert.equal(await evaluate("document.querySelector('#resultDialog').dataset.outcome"), 'lost');
+  assert.equal(await evaluate("document.querySelector('.result-confetti').matches(':popover-open')"), false, 'Losing receipt has no confetti');
+  assert.equal(await evaluate("document.querySelector('.result-trophy-lost').complete && document.querySelector('.result-trophy-lost').naturalWidth === 328"), true, 'Original loss crest loads');
   assert.equal(await evaluate("document.querySelector('#resultLoss').hidden"), false);
   assert.equal(await evaluate("document.querySelector('#resultAmount').hidden"), true);
   for (const width of [393,320]) {

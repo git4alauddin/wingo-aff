@@ -22,6 +22,29 @@ export function mountRoundResults(dialog, settings = {}) {
   let automatic = settings.autoClose !== false;
   const checkbox = $('#resultAutoClose');
   checkbox.checked = automatic;
+  const confetti = page.createElement('div');
+  confetti.className = 'result-confetti';
+  confetti.setAttribute('popover', 'manual');
+  confetti.setAttribute('aria-hidden', 'true');
+  confetti.inert = true;
+  const confettiColors = ['#ffdc67', '#ff464b', '#3edb90', '#d94fe7'];
+  for (let index = 0; index < 52; index++) {
+    const piece = page.createElement('i');
+    piece.style.cssText = `--x:${(index * 47 + 13) % 100}%;--drift:${(index * 71 % 220) - 110}px;--delay:${index % 8 * .055}s;--duration:${2.3 + index % 6 * .13}s;--spin:${360 + index % 5 * 180}deg;--piece-color:${confettiColors[index % confettiColors.length]}`;
+    confetti.append(piece);
+  }
+  page.body.append(confetti);
+  let confettiTimer;
+  function stopConfetti() {
+    clearTimeout(confettiTimer);
+    if (confetti.hidePopover && confetti.matches(':popover-open')) confetti.hidePopover();
+  }
+  function celebrate() {
+    stopConfetti();
+    if (current.outcome !== 'won' || page.defaultView?.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches || !confetti.showPopover) return;
+    confetti.showPopover();
+    confettiTimer = setTimeout(stopConfetti, 3400);
+  }
 
   function label() {
     $('#resultAutoLabel').textContent = `${Math.max(1, Math.ceil(remaining / 1000))} seconds auto close`;
@@ -41,6 +64,7 @@ export function mountRoundResults(dialog, settings = {}) {
     if (destroyed || current || !queue.length || page.querySelector('dialog[open]')) return;
     current = queue.shift();
     dialog.dataset.outcome = current.outcome;
+    dialog.dataset.color = current.colors[0].toLowerCase();
     dialog.dataset.period = current.period;
     dialog.dataset.room = current.room;
     dialog.dataset.payout = current.payout;
@@ -61,10 +85,10 @@ export function mountRoundResults(dialog, settings = {}) {
     $('#resultRoom').textContent = `Period: WinGo ${roomLabel(current.room)}`;
     $('#resultReturn').textContent = `${money(current.payout)} returned · ${money(current.stake)} staked`;
     remaining = seconds * 1000; checkbox.checked = automatic; label();
-    dialog.showModal(); startTimer();
+    dialog.showModal(); startTimer(); celebrate();
   }
   function onClose(event) {
-    if (event.target === dialog && !dialog.open) { stopTimer(); current = null; }
+    if (event.target === dialog && !dialog.open) { stopTimer(); stopConfetti(); current = null; }
     queueMicrotask(pump);
   }
   function onToggle() { automatic = checkbox.checked; remaining = seconds * 1000; label(); startTimer(); }
@@ -79,7 +103,7 @@ export function mountRoundResults(dialog, settings = {}) {
       seen.add(key); queue.push(row); pump();
     },
     destroy() {
-      destroyed = true; stopTimer(); queue.length = 0;
+      destroyed = true; stopTimer(); stopConfetti(); confetti.remove(); queue.length = 0;
       page.removeEventListener('close', onClose, true);
       page.removeEventListener('visibilitychange', visibilityChanged);
       checkbox.removeEventListener('change', onToggle);
