@@ -27,7 +27,7 @@
 </main></div>
 <button type="button" class="studio-float predict-float" id="predictLauncher" aria-label="Open WinGo Studio prediction" aria-controls="predictionDialog" aria-haspopup="dialog" aria-expanded="false"><span class="ball ball-green ball-small" aria-hidden="true"><b>7</b></span><small>PREDICT</small></button>
 </div>
-<dialog class="dialog bet-dialog" id="betDialog" aria-labelledby="betTitle" aria-describedby="betPeriod betNotice" data-theme="green">
+<dialog class="dialog bet-dialog" id="betDialog" aria-labelledby="betTitle" aria-describedby="betPeriod" data-theme="green">
   <form id="betForm" novalidate>
     <header class="bet-sheet-header"><p id="betRoom">WinGo 1 Min</p><h2 id="betTitle">Select Green</h2></header>
     <div class="bet-sheet-body">
@@ -37,7 +37,6 @@
       <div class="bet-sheet-row"><label for="betMultiplier">Quantity</label><div class="bet-quantity"><button type="button" id="betDecrease" aria-label="Decrease quantity">−</button><input type="number" id="betMultiplier" min="1" max="100" step="1" inputmode="numeric" value="1" required><button type="button" id="betIncrease" aria-label="Increase quantity">+</button></div></div>
       <div class="bet-quantity-options" role="group" aria-label="Quantity presets"><button type="button" data-bet-quantity="1" aria-pressed="true">X1</button><button type="button" data-bet-quantity="5" aria-pressed="false">X5</button><button type="button" data-bet-quantity="10" aria-pressed="false">X10</button><button type="button" data-bet-quantity="20" aria-pressed="false">X20</button><button type="button" data-bet-quantity="50" aria-pressed="false">X50</button><button type="button" data-bet-quantity="100" aria-pressed="false">X100</button></div>
       <div class="bet-agreement"><label><input type="checkbox" id="betAgree" checked> I agree</label><button type="button" id="betRules">〈Pre-sale rules〉</button></div>
-      <p class="bet-notice" id="betNotice">Virtual credits only · No real money</p>
       <p class="sr-only" id="feeNote"></p><p class="error" id="betError" role="alert" hidden></p>
     </div>
     <footer class="bet-sheet-footer"><button type="button" data-close>Cancel</button><button type="submit" id="confirmBet">Total amount <span id="betTotal" aria-live="polite"></span></button></footer>
