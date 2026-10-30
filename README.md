@@ -50,7 +50,7 @@ External embedding depends on DmFirst's framing policy. The local preview does n
 - `js/config.js`: affiliate registration/wallet URLs, deposit amount, offer timing, and voice guidance.
 - `js/prediction-config.js`: shared prediction text, visitor code, unlock timing, spin timing/stagger, number pairs, admin contact, and result banner. `prediction-model.js` maps the Studio digit to its consistent pair; `prediction-reels.js` handles the shared animation.
 - `js/studio-config.js`: creator code, initial virtual balance, stakes/limits, room timings, lock window, fee, seeded history, outcome sequence, simulation label, and `resultPopup.autoClose/autoCloseSeconds` (default three seconds).
-- `js/round-results.js` and `js/result-markup.js`: settled result queue, receipt display, and SVG illustration. `css/round-results.css` contains the win/loss palettes. `js/bet-history.js` and `css/game-refinements.css` contain the reference-style personal history and sticky header.
+- `js/round-results.js` and `js/result-markup.js`: settled result queue, receipt display, and SVG illustration. `css/round-results.css` contains the win/loss palettes. `js/bet-history.js` and `css/history-panels.css` contain the reference-style personal history, results table, and chart styling. `css/game-refinements.css` contains the shared game layout and sticky header.
 - `js/wingo-engine.js`: number/color/size mapping and settlement model.
 
 Client configuration is publicly readable. Do not put secrets in it. This project has no official game-provider API, live outcome feed, or prediction service.

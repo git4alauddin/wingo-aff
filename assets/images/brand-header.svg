@@ -1,1 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 155 44"><defs><linearGradient id="g" x2=".8" y2="1"><stop stop-color="#ffe69c"/><stop offset=".6" stop-color="#edb94e"/><stop offset="1" stop-color="#b7872d"/></linearGradient></defs><g transform="translate(0 -1) scale(1.15)" fill="none" stroke="url(#g)" stroke-width="3.4" stroke-linejoin="round"><path d="M8 33V9h10q15 0 15 12t-15 12H8Z"/><path d="M14 29V15l9 11 11-14"/><ellipse cx="23" cy="23" rx="23" ry="9" transform="rotate(-35 23 23)" stroke-width="1.5"/><path d="m37 4 1 5 5 1-5 1-1 5-1-5-5-1 5-1Z" fill="#ffd878" stroke="none"/></g><text x="56" y="30" fill="url(#g)" font-family="Arial,sans-serif" font-size="26" font-weight="750">DmFirst</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 155 44">
+  <defs><linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffe99c"/><stop offset=".48" stop-color="#ffd15c"/><stop offset="1" stop-color="#e8a52e"/></linearGradient></defs>
+  <g fill="none" stroke="url(#gold)" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M7 33V8h12c12 0 18 5 18 13 0 9-7 14-19 14H7" stroke-width="3"/>
+    <path d="M13 30V15l10 11L36 11" stroke-width="3"/>
+    <ellipse cx="23" cy="23" rx="24" ry="9" transform="rotate(-38 23 23)" stroke-width="1.5"/>
+    <path d="M7 28 3 36c-2 5 5 6 13 3" stroke-width="1.5"/>
+    <path d="m38 3 1.1 5.2 5.2 1.1-5.2 1.1L38 16l-1.1-5.6-5.2-1.1 5.2-1.1Z" fill="#ffda6c" stroke="none"/>
+  </g>
+  <text x="52" y="30" fill="url(#gold)" font-family="Arial,Helvetica,sans-serif" font-size="26" font-weight="700">DmFirst</text>
+</svg>

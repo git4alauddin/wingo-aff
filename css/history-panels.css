@@ -1,0 +1,82 @@
+/* Result panels share the reference's column rhythm, colors and type scale. */
+.history-table { table-layout:fixed; background:#0a493d; font-size:13px; }
+.history-table th { height:44px; padding:5px 4px; background:#052b23; color:#ffd153; font-size:13px; font-weight:400; }
+.history-table th:nth-child(1) { width:42%; }
+.history-table th:nth-child(2) { width:20%; }
+.history-table th:nth-child(3) { width:22%; }
+.history-table th:nth-child(4) { width:16%; }
+.history-table td { height:43px; padding:3px 4px; color:#fff; }
+.history-table td:first-child { font-size:13px; font-variant-numeric:tabular-nums; }
+.history-table .result-number { display:inline-block; font-size:27px; line-height:1; }
+.history-table .result-number.dual { background-image:linear-gradient(var(--number-color) 0 50%,#c94aeb 50%); }
+.history-table .color-dots { gap:10px; vertical-align:middle; }
+.history-table .color-dot { width:11px; height:11px; }
+
+.chart-panel,.my-panel { background:#052b23; }
+.chart-panel { --period-column:128px; }
+.chart-statistics { padding:12px 11px 13px; }
+.chart-columns { grid-template-columns:var(--period-column) minmax(0,1fr); margin-bottom:22px; font-size:14px; line-height:16px; }
+.stat-row { grid-template-columns:var(--period-column) minmax(0,1fr); gap:2px; min-height:29px; font-size:13px; color:#ffd153; }
+.stat-row>span { white-space:nowrap; }
+.stat-digits { grid-template-columns:repeat(10,minmax(0,1fr)); font-size:12px; color:#a7cce5; font-variant-numeric:tabular-nums; }
+.stat-digits .winning-digit { width:19px; max-width:100%; justify-self:center; font-size:12px; color:#ff5863; }
+.chart-row { grid-template-columns:var(--period-column) minmax(0,1fr) 17px; height:54px; gap:3px; padding:0 11px; border-bottom-color:#b4d1c4; }
+.chart-row>span:first-child { font-size:12px; font-weight:400; white-space:nowrap; font-variant-numeric:tabular-nums; }
+.chart-digits { grid-template-columns:repeat(10,minmax(0,1fr)); align-items:center; gap:3px; }
+.chart-digit { width:16px; max-width:100%; justify-self:center; font-size:12px; color:#d7e8e1; border-color:#abc7bd; }
+.chart-digit.selected { color:#fff; }
+.chart-digit.selected.dual { background:linear-gradient(90deg,#fa5563 50%,#d64cde 50%); }
+.chart-digit.selected.dual.green { background:linear-gradient(90deg,#37bb85 50%,#d64cde 50%); }
+.chart-row .size-circle { justify-self:end; font-size:11px; font-weight:700; background:#f5be00; }
+.chart-row .size-circle.small { background:#64a6f0; }
+
+.my-history-tools { display:flex; justify-content:flex-end; padding:13px 12px 3px; }
+.my-history-tools button { display:flex; align-items:center; justify-content:center; gap:5px; min-height:32px; min-width:74px; border:1px solid #d5b44f; border-radius:11px; padding:5px 9px; background:transparent; color:#e9c855; font-size:13px; }
+.my-history-tools button[aria-pressed="true"] { background:#c2a34e22; }
+.my-history-tools button>span { width:17px; height:17px; display:grid; place-items:center; border:1px solid currentColor; border-radius:50%; font-size:19px; line-height:1; }
+.my-history-row { display:block; padding:9px 11px; border:0; }
+.my-history-row summary { display:grid; grid-template-columns:49px minmax(0,1fr) 80px; align-items:center; gap:11px; list-style:none; cursor:pointer; min-height:52px; }
+.my-history-row summary::-webkit-details-marker { display:none; }
+.my-history-row summary:focus-visible { outline:2px solid var(--gold); outline-offset:3px; border-radius:4px; }
+.bet-badge { width:49px; height:44px; display:grid; place-items:center; border-radius:10px; background:#15b76c; color:#fff; font-size:26px; font-weight:400; }
+.bet-badge.red { background:#ff535c; }
+.bet-badge.violet { background:#c563f4; }
+.bet-badge.small { background:#6ea6f0; font-size:12px; }
+.bet-badge.big { background:#ffad58; font-size:15px; }
+.bet-badge.dual { background:linear-gradient(135deg,#ff535c 50%,#c563f4 50%); }
+.bet-badge.green.dual { background:linear-gradient(135deg,#15b76c 50%,#c563f4 50%); }
+.bet-meta { display:block; min-width:0; }
+.my-history-row .bet-meta strong { display:block; font-size:14px; line-height:18px; font-weight:400; white-space:nowrap; color:#edcd76; }
+.bet-meta i { display:inline-block; margin-left:4px; font-size:9px; font-style:normal; color:#668c7b; }
+.my-history-row[open] .bet-meta i { transform:rotate(180deg); }
+.bet-meta time { display:block; margin-top:3px; color:#8eada2; font-size:12px; line-height:17px; white-space:nowrap; font-variant-numeric:tabular-nums; }
+.my-history-row .bet-outcome { display:flex; flex-direction:column; align-items:stretch; gap:7px; min-width:0; font-size:12px; }
+.bet-outcome>span { display:block; text-align:center; padding:5px 3px; border:1px solid currentColor; border-radius:5px; font-size:11px; line-height:13px; }
+.my-history-row .bet-outcome strong { font-size:12px; line-height:16px; font-weight:400; white-space:nowrap; color:inherit; text-align:right; font-variant-numeric:tabular-nums; }
+.bet-outcome.won { color:#00c97b; }
+.bet-outcome.lost { color:#ff4148; }
+.bet-outcome.pending { color:#d4be70; }
+.history-detail-content { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:9px; margin:12px 0 4px; padding:13px 12px; border:1px solid #1e5541; border-radius:7px; background:#03281e; font-size:11px; }
+.history-detail-content>span { color:#97b7a7; }
+.my-history-row .history-detail-content strong { color:#d0e0d4; font-size:11px; text-align:right; font-weight:400; overflow-wrap:anywhere; }
+
+@media(max-width:350px) {
+  .history-table,.history-table th { font-size:11px; }
+  .history-table td:first-child { font-size:11px; }
+  .history-table .color-dots { gap:7px; }
+  .chart-panel { --period-column:106px; }
+  .chart-statistics { padding-inline:8px; }
+  .chart-columns { font-size:13px; }
+  .stat-row { font-size:11px; }
+  .stat-digits,.stat-digits .winning-digit { font-size:10px; }
+  .chart-row { padding-inline:8px; grid-template-columns:var(--period-column) minmax(0,1fr) 15px; }
+  .chart-row>span:first-child { font-size:10px; }
+  .chart-digits { gap:2px; }
+  .chart-digit { width:13px; font-size:10px; }
+  .my-history-row { padding-inline:9px; }
+  .my-history-row summary { grid-template-columns:42px minmax(0,1fr) 76px; gap:8px; }
+  .bet-badge { width:42px; }
+  .my-history-row .bet-meta strong { font-size:11px; }
+  .bet-meta time { font-size:10px; }
+  .my-history-row .bet-outcome strong { font-size:11px; }
+}
