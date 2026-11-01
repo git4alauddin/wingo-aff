@@ -15,8 +15,11 @@ npm start
 
 - `http://127.0.0.1:4175/` — animated access page, then registration.
 - `http://127.0.0.1:4175/?preview=1` — hold the access-page preview.
-- `http://127.0.0.1:4175/registration.html` — DmFirst affiliate registration, floating Claim and Predict buttons, and top-right Creator Studio entry.
-- `http://127.0.0.1:4175/creator-studio.html` — WinGo gameplay simulation.
+- `http://127.0.0.1:4175/registration.html` — DmFirst affiliate registration, floating Claim and Predict buttons, and separate DmFirst/9K Club Studio entries.
+- `http://127.0.0.1:4175/creator-studio.html?platform=dmfirst` — original DmFirst Studio (also the default without a platform parameter).
+- `http://127.0.0.1:4175/creator-studio.html?platform=9k` — 9K Club Studio, with the orange/cream palette and matching branding from `../ref_video/9k-theme.mkv`.
+
+The access and registration pages offer separate **DmFirst Studio** and **9K Club Studio** buttons. Each URL fixes its platform, including on reload; there is no in-Studio palette switch or shared saved-theme preference. Both use the existing Studio password and game simulation.
 
 Default visitor prediction code: **DMFIRST**. Default Studio password: **@creator**, matching the Aviator Studio. These are public browser-side UI gates, not secure authentication. Run pages through the local server because they use ES modules.
 

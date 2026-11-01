@@ -26,6 +26,8 @@ gateForm.addEventListener('submit', event => {
 $('#studioPassword').addEventListener('input', () => { $('#studioGateError').hidden = true; $('#studioPassword').setAttribute('aria-invalid', 'false'); });
 
 function startStudio() {
+  const brand = document.documentElement.dataset.studioPlatform === '9k'
+    ? { name: '9K Club', label: '9K CLUB', logo: 'assets/images/brand-9k.svg' } : null;
   const engine = new WinGoEngine(studioConfig);
   let multiplier = 1, selection, betPeriod, tab = 'history', page = 0;
   let renderedPeriod, renderedNumber, renderedSecond, historyVersion, frame, previousTime = performance.now();
@@ -33,13 +35,13 @@ function startStudio() {
   $$('.dialog:not(#resultDialog)').forEach(bindDialog);
   const roundResults = mountRoundResults($('#resultDialog'), studioConfig.resultPopup);
   const personalHistory = mountBetHistory($('#myHistory'));
-  const announcements = mountAnnouncements($('#announcementText'), studioConfig.announcements);
+  const announcements = mountAnnouncements($('#announcementText'), studioConfig.announcements.map(message => brand ? message.replaceAll('DmFirst', brand.name) : message));
   $('#feeNote').textContent = `${studioConfig.serviceFee * 100}% service fee. Returns are calculated on the stake after this fee.`;
   $('#rulesFee').textContent = `This Studio applies a ${studioConfig.serviceFee * 100}% service fee to each stake. Multipliers include the returned stake and apply after the fee. Losing bets return zero.`;
   $('#betStake').min = studioConfig.minStake; $('#betStake').max = studioConfig.maxStake;
   $('#numberGrid').innerHTML = Array.from({ length: 10 }, (_, n) => `<button type="button" data-selection="number:${n}" aria-label="Bet on number ${n}">${ball(n)}</button>`).join('');
   const prediction = mountPrediction({
-    launcher: $('#predictLauncher'), snapshot: () => engine.snapshot(), creator: true,
+    launcher: $('#predictLauncher'), snapshot: () => engine.snapshot(), creator: true, brand,
     beforeOpen() {
       if (engine.activeRoom !== 60) $('#room60').click();
     },

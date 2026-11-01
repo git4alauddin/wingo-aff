@@ -1,5 +1,6 @@
 import { config } from './config.js';
 import { playAccessSequence, startCodeRain } from './animations.js';
+import { configureStudioEntries } from './studio-entries.js';
 
 const $ = selector => document.querySelector(selector);
 const root = document.documentElement;
@@ -16,7 +17,7 @@ let stopRain = () => {}, navigationFrame;
 $('#preview-notice').hidden = !preview;
 $('[data-year]').textContent = new Date().getFullYear();
 document.querySelectorAll('[data-wrapper-link]').forEach(link => { link.href = config.registrationPage; });
-document.querySelectorAll('[data-creator-link]').forEach(link => { link.hidden = !config.creatorStudio.enabled; link.href = config.creatorStudio.url; });
+configureStudioEntries();
 
 function updateClock() {
   const now = new Date();

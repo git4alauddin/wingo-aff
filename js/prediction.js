@@ -6,7 +6,7 @@ import { playAccessSequence } from './animations.js';
 import { bindDialog } from './ui.js';
 
 /** Shared DM-first 1-minute prediction UI. Studio supplies its own round snapshot. */
-export function mountPrediction({ launcher, snapshot, creator = false, beforePredict = () => {}, beforeOpen = () => {} }) {
+export function mountPrediction({ launcher, snapshot, creator = false, brand = null, beforePredict = () => {}, beforeOpen = () => {} }) {
   const dialog = document.createElement('dialog');
   dialog.id = 'predictionDialog';
   dialog.className = 'dialog prediction-dialog';
@@ -18,6 +18,10 @@ export function mountPrediction({ launcher, snapshot, creator = false, beforePre
   dialog.querySelectorAll('[data-prediction-text]').forEach(element => {
     element.textContent = text[element.dataset.predictionText] ?? '';
   });
+  if (brand) {
+    $('[data-prediction-text="brand"]').textContent = brand.label;
+    const logo = $('.brand img'); logo.src = brand.logo; logo.alt = brand.name;
+  }
   $('[data-prediction-heading]').textContent = predictionConfig.gameName;
   $('[data-prediction-admin-text]').textContent = predictionConfig.adminContact.text;
   const code = predictionConfig.accessCode?.trim();

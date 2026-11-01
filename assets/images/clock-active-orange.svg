@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+  <defs>
+    <linearGradient id="rim" x1="0" y1="0" x2=".3" y2="1"><stop stop-color="#ffe0be"/><stop offset=".48" stop-color="#ffc18c"/><stop offset="1" stop-color="#ffe6c9"/></linearGradient>
+    <linearGradient id="face" x1="0" y1="0" x2=".6" y2="1"><stop stop-color="#ffbe83"/><stop offset=".6" stop-color="#f9964b"/><stop offset="1" stop-color="#ec7628"/></linearGradient>
+    <radialGradient id="sheen" cx=".3" cy=".15" r=".8"><stop stop-color="#fff" stop-opacity=".24"/><stop offset=".65" stop-color="#fff" stop-opacity="0"/></radialGradient>
+  </defs>
+  <circle cx="24" cy="24" r="23.5" fill="url(#rim)"/>
+  <circle cx="24" cy="24" r="20.1" fill="#fff0df"/>
+  <circle cx="24" cy="24" r="18.4" fill="url(#face)"/>
+  <circle cx="24" cy="24" r="17" fill="none" stroke="#fff" stroke-opacity=".22" stroke-width=".7"/>
+  <path d="M24 7v2M24 39v2M7 24h2M39 24h2" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width=".7"/>
+  <circle cx="24" cy="24" r="18.4" fill="url(#sheen)"/>
+  <path d="M16 16 24 24 32 16" fill="none" stroke="#9f4819" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M16 16 24 24 32 16" fill="none" stroke="#fff" stroke-opacity=".75" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M24 24v11" stroke="#fff" stroke-opacity=".72" stroke-width="1"/>
+  <circle cx="24" cy="24" r="2.8" fill="#fff0df"/>
+  <circle cx="23.5" cy="23.4" r="1" fill="#fff"/>
+</svg>

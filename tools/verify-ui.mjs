@@ -372,6 +372,54 @@ try {
   await click('#predictionDialog [data-close]');
   await click('#deposit'); await click('#addCredits');
   assert.equal(await evaluate("document.querySelector('#wallet').textContent"), '₹31,076.80');
+  // Separate links select a platform; no saved palette can change either studio.
+  const originalWalletColor = await evaluate("getComputedStyle(document.querySelector('.wallet-card')).backgroundColor");
+  assert.equal(await evaluate("!!document.querySelector('#studioThemeToggle')"), false);
+  await open('/registration.html', "!!document.querySelector('#predictLauncher')");
+  assert.equal(await evaluate("document.querySelectorAll('[data-creator-link]').length"), 2);
+  assert.equal(await evaluate("new URL(document.querySelector('[data-studio-platform=dmfirst]').href).searchParams.get('platform')"), 'dmfirst');
+  assert.equal(await evaluate("new URL(document.querySelector('[data-studio-platform=\"9k\"]').href).searchParams.get('platform')"), '9k');
+  await waitFor("document.querySelector('#deposit-dialog').open"); await click('[data-dismiss-deposit]');
+  for (const width of [1440,393,320]) {
+    await send('Emulation.setDeviceMetricsOverride', {width,height:1050,deviceScaleFactor:1,mobile:width<760});
+    await screenshot(`studio-entries-${width}`);
+    assert.equal(await evaluate('document.documentElement.scrollWidth<=innerWidth'), true, `${width}px studio entries fit`);
+  }
+  await click('[data-creator-link][data-studio-platform="9k"]');
+  await waitFor("document.documentElement.dataset.studioPlatform==='9k' && !!document.querySelector('#studioGateForm')");
+  assert.equal(await evaluate('document.title'), '9K Club × WinGo — Creator Studio');
+  assert.equal(await evaluate("document.querySelector('#studioGate .auth-title').textContent"), '9K Club Studio');
+  await screenshot('9k-studio-access');
+  await fill('#studioPassword','@creator'); await evaluate("document.querySelector('#studioGateForm').requestSubmit()");
+  await waitFor("!document.querySelector('#studioApp').hidden");
+  assert.equal(await evaluate("getComputedStyle(document.body).backgroundColor"), 'rgb(233, 106, 33)');
+  assert.equal(await evaluate("getComputedStyle(document.querySelector('.wallet-card')).backgroundColor"), 'rgb(253, 243, 234)');
+  assert.equal(await evaluate("document.querySelector('.game-header>img').alt"), '9K Club');
+  assert.equal(await evaluate("document.querySelector('#announcementText').textContent.includes('9K Club')"), true);
+  assert.equal(await evaluate("!!document.querySelector('#studioThemeToggle')"), false);
+  assert.equal(await evaluate("document.querySelectorAll('img[alt=DmFirst]').length"), 0);
+  for (const width of [1440,393,320]) {
+    await send('Emulation.setDeviceMetricsOverride', {width,height:1050,deviceScaleFactor:1,mobile:width<760});
+    await evaluate('scrollTo(0,0)'); await screenshot(`theme-9k-${width}`);
+    assert.equal(await evaluate('document.documentElement.scrollWidth<=innerWidth'), true, `${width}px 9K studio has no overflow`);
+    await click('[data-selection="size:Big"]');
+    assert.equal(await evaluate("getComputedStyle(document.querySelector('#betDialog')).backgroundColor"), 'rgb(255, 255, 255)');
+    await screenshot(`theme-9k-selection-${width}`); await click('#betDialog [data-close]');
+  }
+  await click('#tabChart'); await screenshot('theme-9k-chart'); await click('#tabMy'); await screenshot('theme-9k-history'); await click('#tabHistory');
+  await click('#predictLauncher'); await click('#predictRun'); await waitFor("!!document.querySelector('#predictResult').dataset.numbers");
+  assert.equal(await evaluate("document.querySelectorAll('[data-prediction-reel][data-obscured=true]').length"), 3);
+  assert.equal(await evaluate("document.querySelector('#predictionDialog [data-prediction-text=brand]').textContent"), '9K CLUB');
+  await screenshot('theme-9k-prediction'); await click('#predictionDialog [data-close]');
+  await open('/creator-studio.html?platform=9k', "!!document.querySelector('#studioGateForm')");
+  assert.equal(await evaluate("document.documentElement.dataset.studioTheme"), '9k', 'The 9K entry keeps its palette on reload');
+  await evaluate("localStorage.setItem('dmfirst:studio-theme','9k')");
+  await open('/creator-studio.html', "!!document.querySelector('#studioGateForm')");
+  assert.equal(await evaluate("document.documentElement.dataset.studioTheme"), 'original', 'Legacy saved preferences never change DmFirst');
+  await fill('#studioPassword','@creator'); await evaluate("document.querySelector('#studioGateForm').requestSubmit()");
+  await waitFor("!document.querySelector('#studioApp').hidden");
+  assert.equal(await evaluate("getComputedStyle(document.querySelector('.wallet-card')).backgroundColor"), originalWalletColor);
+  assert.equal(await evaluate("document.querySelector('.game-header>img').alt"), 'DmFirst');
   await open('/registration.html', "!!document.querySelector('#predictLauncher')");
   await waitFor("document.querySelector('#deposit-dialog').open"); await screenshot('deposit-mobile');
   await click('[data-dismiss-deposit]'); await click('#predictLauncher');

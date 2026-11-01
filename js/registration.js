@@ -3,8 +3,8 @@ import { mountRegistrationFlow } from './registration-flow.js';
 import { mountRegistrationAudio } from './registration-audio.js';
 import { mountDraggableWidget } from './draggable-widget.js';
 import { mountPrediction } from './prediction.js';
-document.querySelector('[data-creator-link]').hidden = !config.creatorStudio.enabled;
-document.querySelector('[data-creator-link]').href = config.creatorStudio.url;
+import { configureStudioEntries } from './studio-entries.js';
+configureStudioEntries();
 let guidance = { destroy() {} };
 if (config.guidance.enabled && config.guidance.src) {
   document.querySelector('[data-registration-audio]').src = config.guidance.src;

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 166 46" role="img" aria-label="9K Club">
+  <defs><linearGradient id="gold" x2="0" y2="1"><stop stop-color="#fff58a"/><stop offset=".5" stop-color="#ffdc28"/><stop offset="1" stop-color="#ffbc17"/></linearGradient></defs>
+  <path d="M10 12C20-1 55 0 69 10M7 31c2 9 17 12 30 8" fill="none" stroke="#fff9d6" stroke-width="1.8" stroke-linecap="round"/>
+  <text x="9" y="36" fill="#fff9e9" font-family="Arial,Helvetica,sans-serif" font-size="40" font-weight="900" font-style="italic">9</text>
+  <text x="32" y="36" fill="url(#gold)" font-family="Arial,Helvetica,sans-serif" font-size="40" font-weight="900" font-style="italic">K</text>
+  <text x="65" y="36" fill="url(#gold)" font-family="Arial,Helvetica,sans-serif" font-size="25" font-weight="900">.CLUB</text>
+</svg>
