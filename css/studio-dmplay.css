@@ -1,0 +1,145 @@
+/* DmPlay reference screenshots: coral chrome, warm white surfaces, navy text. */
+html[data-studio-theme="dmplay"] {
+  color-scheme:light;
+  --bg:#fff7f4; --panel:#fff; --panel-raised:#fff7f4; --line:#f0e6e2;
+  --green:#14b866; --gold:#ff563f; --text:#00264d; --muted:#8c9baa;
+  --dm-coral:#ff563f; --dm-red:#ff535c; --dm-violet:#b353ff;
+  --dm-active:linear-gradient(110deg,#ff563f,#ff8969);
+}
+[data-studio-theme="dmplay"] .studio-page { background:#fff7f4; }
+[data-studio-theme="dmplay"] .game-shell { --game-gutter:13px; background:linear-gradient(#ff8965,#ff6549 335px,#fff7f4 335px); border:0; box-shadow:0 16px 60px #bd553518; font-family:Arial,Helvetica,sans-serif; }
+[data-studio-theme="dmplay"] .game-header { height:50px; background:#ff8965; }
+[data-studio-theme="dmplay"] .game-header>img { width:120px; height:46px; }
+[data-studio-theme="dmplay"] .game-icon,[data-studio-theme="dmplay"] .game-back { color:white; }
+[data-studio-theme="dmplay"] .game-icon[aria-pressed="true"] { color:#ffe3a6; }
+[data-studio-theme="dmplay"] .game-back svg { width:24px; height:24px; border:1px solid white; border-radius:50%; padding:4px; }
+[data-studio-theme="dmplay"] .wallet-card { margin:18px 0 15px; padding:18px 22px 12px; border-radius:9px; background:radial-gradient(ellipse at 0 100%,#f7f7f7 0 38%,transparent 39%),linear-gradient(115deg,#fff,#fafafa); }
+[data-studio-theme="dmplay"] .wallet-amount { gap:8px; }
+[data-studio-theme="dmplay"] .wallet-amount strong { font-size:20px; color:var(--text); }
+[data-studio-theme="dmplay"] .wallet-amount button { width:20px; height:25px; color:#8c9baa; }
+[data-studio-theme="dmplay"] .wallet-amount button svg { width:18px; height:16px; }
+[data-studio-theme="dmplay"] .wallet-caption { font-size:14px; font-weight:400; text-transform:none; letter-spacing:0; margin:8px 0 20px; gap:8px; color:#8c9baa; }
+[data-studio-theme="dmplay"] .wallet-caption svg { color:#00a583; }
+[data-studio-theme="dmplay"] .wallet-caption svg circle { fill:white; }
+[data-studio-theme="dmplay"] .wallet-actions { gap:50px; }
+[data-studio-theme="dmplay"] .wallet-actions button { height:42px; background:var(--dm-red); font-size:16px; }
+[data-studio-theme="dmplay"] .wallet-actions button+button { background:var(--green); }
+[data-studio-theme="dmplay"] .announcement { height:43px; padding:6px 10px 6px 13px; margin-bottom:15px; gap:10px; border:0; border-radius:24px; background:#fff; color:#8c9baa; }
+[data-studio-theme="dmplay"] .announcement button { border-radius:20px; padding:6px 16px; background:var(--dm-coral); color:white; font-size:14px; }
+[data-studio-theme="dmplay"] .announcement button svg { display:none; }
+[data-studio-theme="dmplay"] .announcement>span svg path { fill:var(--dm-coral); }
+[data-studio-theme="dmplay"] .announcement>span svg path+path { fill:none; stroke:var(--dm-coral); }
+[data-studio-theme="dmplay"] .announcement #announcementText { height:30px; }
+[data-studio-theme="dmplay"] .announcement-track>span { white-space:normal; line-height:14px; height:30px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; }
+[data-studio-theme="dmplay"] .room-tabs { padding:0; margin-bottom:14px; gap:0; background:#fff; border-radius:11px; }
+[data-studio-theme="dmplay"] .room-tabs button { height:96px; background:transparent; color:#808080; border-radius:12px; }
+[data-studio-theme="dmplay"] .room-tabs [aria-selected="true"] { background:var(--dm-active); color:white; box-shadow:none; }
+[data-studio-theme="dmplay"] .room-tabs [aria-selected="true"] .clock-icon { background-image:url('../assets/images/clock-active-orange.svg'); }
+[data-studio-theme="dmplay"] .round-card { background:linear-gradient(#ff563f,#ff8969); border-radius:6px; }
+[data-studio-theme="dmplay"] .round-card::before,[data-studio-theme="dmplay"] .round-card::after { background:#fff7f4; }
+[data-studio-theme="dmplay"] .round-left { color:white; }
+[data-studio-theme="dmplay"] .how-to { border-color:white; background:transparent; }
+[data-studio-theme="dmplay"] .how-to svg path+path { stroke:var(--dm-coral); }
+[data-studio-theme="dmplay"] .round-right { border-left-color:#ffe0d3; }
+[data-studio-theme="dmplay"] .countdown span,[data-studio-theme="dmplay"] .countdown.urgent span { background:#fff7f4; color:var(--dm-red); }
+[data-studio-theme="dmplay"] .betting-card { background:#fff; border-radius:10px; padding:8px 11px; margin-top:12px; }
+[data-studio-theme="dmplay"] .color-buttons { gap:16px; }
+[data-studio-theme="dmplay"] .color-buttons .color-green { background:var(--green); border-radius:0 8px 0 8px; }
+[data-studio-theme="dmplay"] .color-buttons .color-violet { background:var(--dm-violet); }
+[data-studio-theme="dmplay"] .color-buttons .color-red { background:var(--dm-red); border-radius:8px 0 8px 0; }
+[data-studio-theme="dmplay"] .number-grid { background:#f5f5f5; margin:14px 0; padding:10px 4px; }
+[data-studio-theme="dmplay"] .stake-multipliers button { background:#f4f4f4; color:var(--text); border-radius:5px; font:12px Arial,Helvetica,sans-serif; }
+[data-studio-theme="dmplay"] .stake-multipliers .random-button { flex-basis:68px; height:32px; background:white; border-color:var(--dm-red); color:var(--dm-red); }
+[data-studio-theme="dmplay"] .stake-multipliers .active { background:#00b578; color:white; }
+[data-studio-theme="dmplay"] .size-buttons { margin:0 11px; }
+[data-studio-theme="dmplay"] .size-buttons button { background:#f7a12c; }
+[data-studio-theme="dmplay"] .size-buttons button+button { background:#6ca4ef; }
+[data-studio-theme="dmplay"] .betting-lock .lock-digit { background:#f4f4f4; color:var(--dm-coral); }
+[data-studio-theme="dmplay"] .history-tabs { margin:13px 0 15px; gap:10px; }
+[data-studio-theme="dmplay"] .history-tabs button { border:0; border-radius:5px; background:white; color:#8c9baa; height:40px; padding:0; font-size:14px; }
+[data-studio-theme="dmplay"] .history-tabs [aria-selected="true"] { background:var(--dm-active); color:white; }
+[data-studio-theme="dmplay"] .history-table { background:white; }
+[data-studio-theme="dmplay"] .history-table th { background:var(--dm-coral); color:white; font-size:14px; font-weight:600; }
+[data-studio-theme="dmplay"] .history-table td { color:var(--text); height:54px; }
+[data-studio-theme="dmplay"] .result-number.red { color:var(--dm-red); }
+[data-studio-theme="dmplay"] .result-number.green { color:var(--green); }
+[data-studio-theme="dmplay"] .result-number.dual { --number-color:var(--dm-red)!important; color:transparent; }
+[data-studio-theme="dmplay"] .result-number.green.dual { --number-color:var(--green)!important; }
+[data-studio-theme="dmplay"] .color-dot { background:var(--dm-red); }
+[data-studio-theme="dmplay"] .color-dot.green { background:#40b985; }
+[data-studio-theme="dmplay"] .color-dot.violet { background:#df49e8; }
+[data-studio-theme="dmplay"] .chart-panel,[data-studio-theme="dmplay"] .my-panel { background:white; color:var(--text); }
+[data-studio-theme="dmplay"] .chart-statistics { padding-top:0; }
+[data-studio-theme="dmplay"] .chart-columns { background:var(--dm-coral); color:white; padding:14px 11px; margin:0 -11px 12px; font-weight:600; }
+[data-studio-theme="dmplay"] .stat-row { color:var(--text); }
+[data-studio-theme="dmplay"] .stat-digits { color:#8d9db8; }
+[data-studio-theme="dmplay"] .chart-row { border-bottom-color:#dcdff0; }
+[data-studio-theme="dmplay"] .chart-digit { color:#abb2c1; border-color:#dcdff0; }
+[data-studio-theme="dmplay"] .chart-digit.selected { color:white; background:#40b985; border-color:#40b985; }
+[data-studio-theme="dmplay"] .chart-digit.selected.red { background:var(--dm-red); border-color:var(--dm-red); }
+[data-studio-theme="dmplay"] .my-history-tools button { color:var(--dm-coral); border-color:var(--dm-coral); }
+[data-studio-theme="dmplay"] .bet-meta strong,[data-studio-theme="dmplay"] .bet-meta i { color:var(--text); }
+[data-studio-theme="dmplay"] .bet-meta time { color:#8c9baa; }
+[data-studio-theme="dmplay"] .history-detail-content { background:#fff7f4; border-color:#f0e6e2; }
+[data-studio-theme="dmplay"] .history-detail-content>span { color:#8c9baa; }
+[data-studio-theme="dmplay"] .history-detail-content strong { color:var(--text); }
+[data-studio-theme="dmplay"] .bet-outcome.won { color:#14a76d; }
+[data-studio-theme="dmplay"] .bet-outcome.lost { color:var(--dm-red); }
+[data-studio-theme="dmplay"] .bet-outcome.pending { color:#987b53; }
+[data-studio-theme="dmplay"] .empty-state { color:#aaa; }
+[data-studio-theme="dmplay"] .empty-scroll { background:linear-gradient(120deg,#eee,#d6d6d8); box-shadow:0 18px 30px #ddd3; }
+[data-studio-theme="dmplay"] .empty-scroll::before,[data-studio-theme="dmplay"] .empty-scroll::after { background:#dedee0; }
+[data-studio-theme="dmplay"] .empty-scroll span { color:#ccc; }
+[data-studio-theme="dmplay"] .pagination { background:#fff; color:#8c9baa; }
+[data-studio-theme="dmplay"] .pagination button { background:var(--dm-coral); color:white; }
+[data-studio-theme="dmplay"] .pagination button:disabled { background:#f4f4f4; color:#8c9baa; }
+[data-studio-theme="dmplay"] .game-footer span { color:#8c9baa; }
+[data-studio-theme="dmplay"] .game-footer img { height:40px; opacity:1; object-fit:contain; }
+[data-studio-theme="dmplay"] .studio-float { background:var(--dm-active); border-color:#ffb79b; color:white; box-shadow:0 6px 20px #b84c3444; }
+
+/* Bottom sheets retain their selection color, including dual-color 0 and 5. */
+[data-studio-theme="dmplay"] .bet-dialog { --selection:#14b866; --selection-header:linear-gradient(110deg,#3aaa73,#43b87d); background:#fff7f4; color:var(--text); }
+[data-studio-theme="dmplay"] .bet-dialog[data-theme="red"] { --selection:#ff535c; --selection-header:linear-gradient(110deg,#ff4c50,#ff606b); }
+[data-studio-theme="dmplay"] .bet-dialog[data-theme="violet"] { --selection:#b353ff; --selection-header:#b353ff; }
+[data-studio-theme="dmplay"] .bet-dialog[data-theme="big"] { --selection:#ffab54; --selection-header:#ffab54; }
+[data-studio-theme="dmplay"] .bet-dialog[data-theme="small"] { --selection:#6ca4ef; --selection-header:#6ca4ef; }
+[data-studio-theme="dmplay"] .bet-dialog[data-dual="true"] { --selection-header:linear-gradient(165deg,var(--selection) 50%,#b353ff 50%); }
+[data-studio-theme="dmplay"] .bet-balance-options button,[data-studio-theme="dmplay"] .bet-quantity-options button { background:#f4f4f4; color:var(--text); }
+[data-studio-theme="dmplay"] .bet-balance-options button[aria-pressed="true"],[data-studio-theme="dmplay"] .bet-quantity-options button[aria-pressed="true"] { background:var(--selection); color:white; }
+[data-studio-theme="dmplay"] .bet-quantity input { background:transparent; color:var(--text); border-color:#f3ece9; }
+[data-studio-theme="dmplay"] .bet-agreement { color:#888; }
+[data-studio-theme="dmplay"] .bet-agreement input { border-color:var(--dm-coral); }
+[data-studio-theme="dmplay"] .bet-agreement input:checked { background:var(--dm-coral); }
+[data-studio-theme="dmplay"] .bet-sheet-footer button { background:#f4f4f4; color:#888; }
+[data-studio-theme="dmplay"] .bet-sheet-footer #confirmBet { background:var(--selection); color:white; }
+[data-studio-theme="dmplay"] .dialog::backdrop { background:#0009; backdrop-filter:none; }
+
+/* Access, help, wallet, and prediction surfaces follow the DmPlay palette. */
+[data-studio-theme="dmplay"] .gate-card,[data-studio-theme="dmplay"] #creditsDialog,[data-studio-theme="dmplay"] #rulesDialog { background:#fff7f4; border-color:#ffd8cd; color:var(--text); }
+[data-studio-theme="dmplay"] .gate-card .brand img { height:54px; object-fit:contain; }
+[data-studio-theme="dmplay"] .gate-card label,[data-studio-theme="dmplay"] .gate-back,[data-studio-theme="dmplay"] .gate-footnote { color:#8c7973; }
+[data-studio-theme="dmplay"] .gate-card input { background:white; }
+[data-studio-theme="dmplay"] .gate-card .primary:hover { background:linear-gradient(110deg,#ff6c55,#ff997b); }
+[data-studio-theme="dmplay"] .primary,[data-studio-theme="dmplay"] .gate-card .primary { background:var(--dm-active); border-color:#ff997b; color:white; }
+[data-studio-theme="dmplay"] .error,[data-studio-theme="dmplay"] .gate-card .error { color:#cf2937; }
+[data-studio-theme="dmplay"] .icon-button { background:white; border-color:#f0e6e2; }
+[data-studio-theme="dmplay"] .rules-table td,[data-studio-theme="dmplay"] .rules-table th { border-color:#f0e6e2; }
+[data-studio-theme="dmplay"] .prediction-dialog { background:#fff7f4; border-color:#ff997b; color:var(--text); box-shadow:0 20px 80px #af472f44; }
+[data-studio-theme="dmplay"] .prediction-dialog .deposit-header,[data-studio-theme="dmplay"] .prediction-period,[data-studio-theme="dmplay"] .prediction-disclosure { color:#8c7973; }
+[data-studio-theme="dmplay"] .prediction-title { color:var(--dm-coral); }
+[data-studio-theme="dmplay"] .prediction-dialog .deposit-close { background:white; border-color:#f0e6e2; color:var(--dm-coral); }
+[data-studio-theme="dmplay"] .prediction-dialog .deposit-corners i { border-color:var(--dm-coral); filter:drop-shadow(0 0 5px #ffb29b); }
+[data-studio-theme="dmplay"] .prediction-content { border-top-color:#f0e6e2; }
+[data-studio-theme="dmplay"] .prediction-trigger,[data-studio-theme="dmplay"] .prediction-ready-banner { background:var(--dm-active); border-color:#ff997b; color:white; }
+[data-studio-theme="dmplay"] [data-predict]:not(:disabled):hover { background:#ff785b; }
+[data-studio-theme="dmplay"] .prediction-result { background:white; border-color:#f0e6e2; }
+[data-studio-theme="dmplay"] .prediction-result h3,[data-studio-theme="dmplay"] .prediction-spin-status { color:#8c7973; }
+[data-studio-theme="dmplay"] .prediction-number-slot { background:#fff7f4; border-color:#f0e6e2; }
+@media(max-width:350px) {
+  [data-studio-theme="dmplay"] .game-shell { --game-gutter:8px; }
+  [data-studio-theme="dmplay"] .wallet-actions { gap:25px; }
+  [data-studio-theme="dmplay"] .history-tabs button { font-size:12px; }
+  [data-studio-theme="dmplay"] .color-buttons { gap:12px; }
+  [data-studio-theme="dmplay"] .stake-multipliers { gap:3px; }
+  [data-studio-theme="dmplay"] .stake-multipliers .random-button { flex-basis:57px; }
+}

@@ -26,8 +26,11 @@ gateForm.addEventListener('submit', event => {
 $('#studioPassword').addEventListener('input', () => { $('#studioGateError').hidden = true; $('#studioPassword').setAttribute('aria-invalid', 'false'); });
 
 function startStudio() {
-  const brand = document.documentElement.dataset.studioPlatform === '9k'
-    ? { name: '9K Club', label: '9K CLUB', logo: 'assets/images/brand-9k.svg' } : null;
+  const platform = document.documentElement.dataset.studioPlatform;
+  const brand = {
+    '9k': { name: '9K Club', label: '9K CLUB', logo: 'assets/images/brand-9k.svg' },
+    dmplay: { name: 'DmPlay', label: 'DMPLAY', logo: 'assets/images/brand-dmplay.png' },
+  }[platform] || null;
   const engine = new WinGoEngine(studioConfig);
   let multiplier = 1, selection, betPeriod, tab = 'history', page = 0;
   let renderedPeriod, renderedNumber, renderedSecond, historyVersion, frame, previousTime = performance.now();
@@ -35,7 +38,11 @@ function startStudio() {
   $$('.dialog:not(#resultDialog)').forEach(bindDialog);
   const roundResults = mountRoundResults($('#resultDialog'), studioConfig.resultPopup);
   const personalHistory = mountBetHistory($('#myHistory'));
-  const announcements = mountAnnouncements($('#announcementText'), studioConfig.announcements.map(message => brand ? message.replaceAll('DmFirst', brand.name) : message));
+  const messages = platform === 'dmplay' ? [
+    'Welcome to DMPLAY! Please use the official DMPLAY website only and contact our support for help.',
+    'For smooth withdrawals, please make sure your account details are correct before proceeding.',
+  ] : studioConfig.announcements.map(message => brand ? message.replaceAll('DmFirst', brand.name) : message);
+  const announcements = mountAnnouncements($('#announcementText'), messages);
   $('#feeNote').textContent = `${studioConfig.serviceFee * 100}% service fee. Returns are calculated on the stake after this fee.`;
   $('#rulesFee').textContent = `This Studio applies a ${studioConfig.serviceFee * 100}% service fee to each stake. Multipliers include the returned stake and apply after the fee. Losing bets return zero.`;
   $('#betStake').min = studioConfig.minStake; $('#betStake').max = studioConfig.maxStake;
@@ -114,6 +121,7 @@ function startStudio() {
     if (state.locked) return toast('This round is locked. Wait for the next period.');
     selection = nextSelection; betPeriod = state.period;
     $('#betDialog').dataset.theme = selection.type === 'number' ? resultFor(selection.value).colors[0].toLowerCase() : selection.value.toLowerCase();
+    $('#betDialog').dataset.dual = String(selection.type === 'number' && resultFor(selection.value).colors.length > 1);
     $('#betRoom').textContent = `WinGo ${roomLabel(state.seconds)}`;
     $('#betTitle').textContent = `Select ${selection.value}`;
     $('#betPeriod').textContent = `WIN GO ${roomLabel(state.seconds).toUpperCase()} · ${betPeriod}`;

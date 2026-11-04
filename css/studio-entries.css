@@ -2,8 +2,14 @@
 .studio-entries a { white-space:nowrap; justify-content:space-between; }
 .studio-entries [data-studio-platform="9k"] { color:#ffcf78; border-color:#f3954d88; background:#d964261a; }
 .studio-entries [data-studio-platform="9k"]:hover { background:#d9642638; border-color:#ffb667; }
+.studio-entries [data-studio-platform="dmplay"] { color:#ffb29b; border-color:#ff654988; background:#ff65491a; }
+.studio-entries [data-studio-platform="dmplay"]:hover { background:#ff654938; border-color:#ff997b; }
 @media(max-width:640px) {
   .portal-header,.terminal-header { flex-wrap:wrap; padding-block:12px; }
-  .studio-entries { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); width:100%; }
+  .studio-entries { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); width:100%; }
   .studio-entries a { display:flex; min-height:40px; padding:9px 10px; font-size:11px; }
+}
+@media(max-width:380px) {
+  .studio-entries { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .studio-entries [data-studio-platform="dmplay"] { grid-column:1 / -1; }
 }

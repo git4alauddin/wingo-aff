@@ -376,14 +376,16 @@ try {
   const originalWalletColor = await evaluate("getComputedStyle(document.querySelector('.wallet-card')).backgroundColor");
   assert.equal(await evaluate("!!document.querySelector('#studioThemeToggle')"), false);
   await open('/registration.html', "!!document.querySelector('#predictLauncher')");
-  assert.equal(await evaluate("document.querySelectorAll('[data-creator-link]').length"), 2);
+  assert.equal(await evaluate("document.querySelectorAll('[data-creator-link]').length"), 3);
   assert.equal(await evaluate("new URL(document.querySelector('[data-studio-platform=dmfirst]').href).searchParams.get('platform')"), 'dmfirst');
   assert.equal(await evaluate("new URL(document.querySelector('[data-studio-platform=\"9k\"]').href).searchParams.get('platform')"), '9k');
+  assert.equal(await evaluate("new URL(document.querySelector('[data-studio-platform=dmplay]').href).searchParams.get('platform')"), 'dmplay');
   await waitFor("document.querySelector('#deposit-dialog').open"); await click('[data-dismiss-deposit]');
   for (const width of [1440,393,320]) {
     await send('Emulation.setDeviceMetricsOverride', {width,height:1050,deviceScaleFactor:1,mobile:width<760});
     await screenshot(`studio-entries-${width}`);
     assert.equal(await evaluate('document.documentElement.scrollWidth<=innerWidth'), true, `${width}px studio entries fit`);
+    assert.equal(await evaluate("[...document.querySelectorAll('[data-creator-link]')].every(link => link.scrollWidth<=link.clientWidth)"), true, `${width}px studio entry labels fit inside their buttons`);
   }
   await click('[data-creator-link][data-studio-platform="9k"]');
   await waitFor("document.documentElement.dataset.studioPlatform==='9k' && !!document.querySelector('#studioGateForm')");
@@ -413,7 +415,50 @@ try {
   await screenshot('theme-9k-prediction'); await click('#predictionDialog [data-close]');
   await open('/creator-studio.html?platform=9k', "!!document.querySelector('#studioGateForm')");
   assert.equal(await evaluate("document.documentElement.dataset.studioTheme"), '9k', 'The 9K entry keeps its palette on reload');
-  await evaluate("localStorage.setItem('dmfirst:studio-theme','9k')");
+  await open('/creator-studio.html?platform=dmplay', "!!document.querySelector('#studioGateForm')");
+  assert.equal(await evaluate('document.title'), 'DmPlay × WinGo — Creator Studio');
+  await screenshot('dmplay-studio-access');
+  await fill('#studioPassword','@creator'); await evaluate("document.querySelector('#studioGateForm').requestSubmit()");
+  await waitFor("!document.querySelector('#studioApp').hidden");
+  assert.equal(await evaluate("document.querySelector('.game-header>img').alt"), 'DmPlay');
+  await waitFor("document.querySelector('.game-header>img').complete && document.querySelector('.game-header>img').naturalWidth>0");
+  assert.equal(await evaluate("document.querySelector('#announcementText').textContent.includes('DMPLAY')"), true);
+  for (const width of [1440,399,320]) {
+    await send('Emulation.setDeviceMetricsOverride', {width,height:950,deviceScaleFactor:1,mobile:width<760});
+    await evaluate('scrollTo(0,0)'); await screenshot(`theme-dmplay-${width}`);
+    assert.equal(await evaluate('document.documentElement.scrollWidth<=innerWidth'), true, `${width}px DmPlay studio fits`);
+    for (const selection of ['color:Green','color:Violet','color:Red','number:0','number:5','size:Big','size:Small']) {
+      await click(`[data-selection="${selection}"]`);
+      assert.equal(await evaluate("document.querySelector('#betDialog').open"), true);
+      assert.equal(await evaluate("document.querySelector('#betDialog').dataset.dual"), String(['number:0','number:5'].includes(selection)));
+      assert.equal(await evaluate("getComputedStyle(document.querySelector('#betDialog')).backgroundColor"), 'rgb(255, 247, 244)');
+      await screenshot(`theme-dmplay-${selection.replace(':','-')}-${width}`);
+      await click('#betDialog [data-close]');
+    }
+  }
+  await send('Emulation.setDeviceMetricsOverride', {width:399,height:950,deviceScaleFactor:1,mobile:true});
+  await click('#tabChart'); await screenshot('theme-dmplay-chart', true);
+  await click('#tabMy'); await screenshot('theme-dmplay-history-empty', true); await click('#tabHistory');
+  await click('#predictLauncher'); await click('#predictRun'); await waitFor("!!document.querySelector('#predictResult').dataset.numbers");
+  assert.equal(await evaluate("document.querySelector('#predictionDialog [data-prediction-text=brand]').textContent"), 'DMPLAY');
+  const dmplayPrediction = await revealedPrediction();
+  await screenshot('theme-dmplay-prediction'); await click('#predictionDialog [data-close]');
+  await click('[data-selection="color:Green"]'); await click('#confirmBet');
+  await advance(55000); await screenshot('theme-dmplay-lock');
+  assert.equal(await evaluate("document.querySelector('#bettingLock').hidden"), false);
+  await advance(5000); await waitFor("document.querySelector('#resultDialog').open");
+  assertMatches(dmplayPrediction, await settledResult());
+  assert.equal(await evaluate("document.querySelector('#resultDialog').dataset.outcome"), 'won');
+  await screenshot('theme-dmplay-result-win'); await click('#resultDialog [data-close]');
+  await click('[data-selection="color:Green"]'); await click('#confirmBet');
+  await advance(60000); await waitFor("document.querySelector('#resultDialog').open");
+  assert.equal(await evaluate("document.querySelector('#resultDialog').dataset.outcome"), 'lost');
+  await screenshot('theme-dmplay-result-loss'); await click('#resultDialog [data-close]');
+  await click('#tabMy'); await screenshot('theme-dmplay-history', true);
+  await click('[data-history-detail]'); await screenshot('theme-dmplay-history-detail', true);
+  await open('/creator-studio.html?platform=dmplay', "!!document.querySelector('#studioGateForm')");
+  assert.equal(await evaluate("document.documentElement.dataset.studioTheme"), 'dmplay', 'DmPlay survives reload');
+  await evaluate("localStorage.setItem('dmfirst:studio-theme','dmplay')");
   await open('/creator-studio.html', "!!document.querySelector('#studioGateForm')");
   assert.equal(await evaluate("document.documentElement.dataset.studioTheme"), 'original', 'Legacy saved preferences never change DmFirst');
   await fill('#studioPassword','@creator'); await evaluate("document.querySelector('#studioGateForm').requestSubmit()");
