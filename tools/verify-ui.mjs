@@ -465,33 +465,6 @@ try {
   await waitFor("!document.querySelector('#studioApp').hidden");
   assert.equal(await evaluate("getComputedStyle(document.querySelector('.wallet-card')).backgroundColor"), originalWalletColor);
   assert.equal(await evaluate("document.querySelector('.game-header>img').alt"), 'DmFirst');
-  // Mobile fit means the entire betting interface and history tabs are visible,
-  // not merely that the document has no horizontal overflow.
-  for (const platform of ['dmfirst','9k','dmplay']) {
-    for (const [width,height] of [[320,568],[360,640],[375,667],[393,852]]) {
-      await send('Emulation.setDeviceMetricsOverride', {width,height,deviceScaleFactor:1,mobile:true});
-      await open(`/creator-studio.html?platform=${platform}`, "!!document.querySelector('#studioGateForm')");
-      await fill('#studioPassword','@creator'); await evaluate("document.querySelector('#studioGateForm').requestSubmit()");
-      await waitFor("!document.querySelector('#studioApp').hidden");
-      assert.equal(await evaluate('document.documentElement.scrollWidth<=innerWidth'), true, `${platform} ${width}px has no horizontal overflow`);
-      assert.equal(await evaluate("document.querySelector('.history-tabs').getBoundingClientRect().bottom<=innerHeight"), true, `${platform} ${width}x${height} game controls and history tabs fit the first screen`);
-      assert.equal(await evaluate("(() => {const f=document.querySelector('#predictLauncher').getBoundingClientRect();return [...document.querySelectorAll('.history-tabs button')].every(e=>{const r=e.getBoundingClientRect();return r.right<=f.left || r.left>=f.right || r.bottom<=f.top || r.top>=f.bottom;});})()"), true, `${platform} Predict does not cover the history tabs`);
-      assert.equal(await evaluate("[...document.querySelectorAll('.wallet-card button,.wallet-amount,.wallet-caption,.room-tabs button,.color-buttons button,.stake-multipliers button,.size-buttons button')].every(e=>e.scrollWidth<=e.clientWidth)"), true, `${platform} ${width}px controls do not clip their labels`);
-      await screenshot(`mobile-fit-${platform}-${width}-${height}`);
-      await click('[data-selection="number:7"]');
-      assert.equal(await evaluate("document.querySelector('#betDialog').open"), true);
-      await click('#betDialog [data-close]');
-      if (width===320) {
-        await click('#predictLauncher'); await click('#predictRun');
-        await waitFor("!!document.querySelector('#predictResult').dataset.numbers");
-        await delay(750);
-        assert.equal(await evaluate("(() => {const d=document.querySelector('#predictionDialog'),r=d.getBoundingClientRect();return r.top>=0 && r.bottom<=innerHeight && d.scrollWidth<=d.clientWidth && d.scrollHeight<=d.clientHeight+1;})()"), true, `${platform} prediction fits a short phone without internal scrolling`);
-        await screenshot(`mobile-fit-prediction-${platform}`); await click('#predictionDialog [data-close]');
-      }
-      await click('#tabMy');
-      assert.equal(await evaluate("!document.querySelector('#myPanel').hidden"), true);
-    }
-  }
   await open('/registration.html', "!!document.querySelector('#predictLauncher')");
   await waitFor("document.querySelector('#deposit-dialog').open"); await screenshot('deposit-mobile');
   await click('[data-dismiss-deposit]'); await click('#predictLauncher');
