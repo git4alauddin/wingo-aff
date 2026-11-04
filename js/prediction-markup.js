@@ -85,6 +85,6 @@ export const predictionMarkup = `
         <strong data-prediction-ready-text>Selection Ready</strong>
     </div>
     <p class="prediction-spin-status" role="status" id="predictStatus" data-prediction-spin-status>Select Predict to spin a preset combination.</p>
-    <p class="prediction-disclosure" data-prediction-text="disclosure">Preset simulation · No live game data</p>
+    <p class="prediction-disclosure" data-prediction-text="disclosure">·</p>
     </div>
 `;

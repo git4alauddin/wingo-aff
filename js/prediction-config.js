@@ -47,7 +47,7 @@ export const predictionConfig = Object.freeze({
         spinningStatus: "Spinning preset combinations…",
         // Available placeholders: {first}, {second}, {size}, {color}.
         resultStatus: "{first} and {second} · {size} · {color}.",
-        disclosure: "Preset simulation · No live game data",
+        disclosure: "",
         firstNumberLabel: "First number",
         secondNumberLabel: "Second number",
         sizeAriaLabel: "Size",
