@@ -36,6 +36,7 @@ External embedding depends on DmFirst's framing policy. The local preview does n
 
 ## Creator Studio
 
+- Phone layouts keep the wallet, room selection, round timer, betting controls, and history tabs together on the first screen. A denser layout supports short portrait screens such as 320×568; history scrolls below. `css/studio-mobile.css` applies this consistently to all three studios and keeps the Studio prediction popup within short viewports. Desktop layouts remain unchanged.
 - Screenshot-based wallet, duration tabs, ticket-style countdown, recent result balls, color controls, number grid, multiplier controls, and Big/Small controls.
 - Independent 30-second, 1-minute, 3-minute, and 5-minute rooms. Each room keeps its own period, result sequence, and history.
 - Betting closes during the final five seconds. At zero, all bets for that room/period settle once, the same result enters history, and the next round opens.
